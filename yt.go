@@ -65,7 +65,7 @@ func play(url string, m bool) {
 
 func nthVideo(query string, n int) string {
 	vids := getVideos(query)
-	if 0 > n || n > len(vids) {
+	if 0 >= n || n > len(vids) {
 		log.Fatalln("No video found")
 	}
 	return videoURL(vids[n-1])
