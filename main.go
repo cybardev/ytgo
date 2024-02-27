@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -18,28 +19,26 @@ func main() {
 	var query string
 	var n int
 	var m bool
+	var u bool
 
 	// parse CLI args
+	flag.BoolVar(&u, "u", false, "Display URL only")
 	flag.BoolVar(&m, "m", false, "Play music only")
 	flag.IntVar(&n, "n", 1, "Play nth media")
 	flag.Parse()
 
 	query = strings.Join(flag.Args(), " ")
 	if query == "" {
-		log.Println(query)
 		log.Fatalln("No query provided")
 	}
 
-	// play media from YT
-	playNth(query, n, m)
-}
-
-func playNth(query string, n int, m bool) {
-	vids := getVideos(query)
-	if 0 > n || n > len(vids) {
-		log.Fatalln("No video found")
+	// play media from YT or display URL
+	url := nthVideo(query, n)
+	if u {
+		fmt.Println(url)
+	} else {
+		play(url, m)
 	}
-	play(videoURL(vids[n-1]), m)
 }
 
 func play(url string, m bool) {
@@ -55,6 +54,14 @@ func play(url string, m bool) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func nthVideo(query string, n int) string {
+	vids := getVideos(query)
+	if 0 > n || n > len(vids) {
+		log.Fatalln("No video found")
+	}
+	return videoURL(vids[n-1])
 }
 
 func videoURL(id string) string {
