@@ -37,13 +37,14 @@ func main() {
 	}
 
 	// play media from YT or display URL
-	if u {
-		fmt.Println(nthVideo(query, n))
+	if f {
+		play(query, m)
 	} else {
-		if f {
-			play(query, m)
+		url := nthVideo(query, n)
+		if u {
+			fmt.Println(url)
 		} else {
-			play(nthVideo(query, n), m)
+			play(url, m)
 		}
 	}
 }
