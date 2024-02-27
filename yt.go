@@ -23,10 +23,10 @@ func main() {
 	var u bool
 
 	// parse CLI args
-	flag.BoolVar(&f, "f", false, "Play from URL")
-	flag.BoolVar(&u, "u", false, "Display URL only")
-	flag.BoolVar(&m, "m", false, "Play music only")
 	flag.IntVar(&n, "n", 1, "Play nth media")
+	flag.BoolVar(&f, "f", false, "Play from URL")
+	flag.BoolVar(&m, "m", false, "Play music only")
+	flag.BoolVar(&u, "u", false, "Display URL only")
 	flag.Parse()
 
 	query = strings.Join(flag.Args(), " ")
