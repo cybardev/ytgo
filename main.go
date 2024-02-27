@@ -11,7 +11,15 @@ import (
 )
 
 func main() {
-	play(videoURL(getVideos("gurenge band cover")[0]))
+	playNth("gurenge band cover", 1)
+}
+
+func playNth(query string, n int) {
+	vids := getVideos(query)
+	if n > len(vids) {
+		log.Fatalln("No video found")
+	}
+	play(videoURL(vids[n-1]))
 }
 
 func play(url string) {
@@ -55,6 +63,5 @@ func fetch(url string) string {
 
 	// Convert the body to type string
 	msg := string(body)
-	// log.Println(msg)
 	return msg
 }
