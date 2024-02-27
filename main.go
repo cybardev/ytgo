@@ -17,7 +17,6 @@ func main() {
 func play(url string) {
 	cmd := exec.Command("mpv", url)
 	cmd.Run()
-	return
 }
 
 func videoURL(id string) string {
