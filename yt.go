@@ -14,6 +14,12 @@ import (
 	"strings"
 )
 
+type VID string
+
+func (v VID) url() string {
+	return "https://www.youtube.com/watch?v=" + string(v)
+}
+
 func main() {
 	// specify available flags
 	var query string
@@ -68,21 +74,17 @@ func nthVideo(query string, n int) string {
 	if 0 > n || n > len(vids) {
 		log.Fatalln("No video found")
 	}
-	return videoURL(vids[n-1])
+	return vids[n-1].url()
 }
 
-func videoURL(id string) string {
-	return "https://www.youtube.com/watch?v=" + id
-}
-
-func getVideos(query string) []string {
+func getVideos(query string) []VID {
 	res := search(query)
 	re := regexp.MustCompile(`(?m)watch\?v=(\S{11})`)
 	matches := re.FindAllStringSubmatch(res, -1)
-	var vids []string
+	var vids []VID
 	for _, match := range matches {
-		if !slices.Contains(vids, match[1]) {
-			vids = append(vids, match[1])
+		if !slices.Contains(vids, VID(match[1])) {
+			vids = append(vids, VID(match[1]))
 		}
 	}
 	return vids
