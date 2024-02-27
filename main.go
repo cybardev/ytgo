@@ -29,6 +29,8 @@ func main() {
 
 	query = strings.Join(flag.Args(), " ")
 	if query == "" {
+		flag.Usage()
+		fmt.Println()
 		log.Fatalln("No query provided")
 	}
 
