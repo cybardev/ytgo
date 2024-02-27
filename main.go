@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"os/exec"
 	"regexp"
 	"slices"
@@ -46,6 +47,9 @@ func play(url string, m bool) {
 		bestaudio, novideo = "--ytdl-format=bestaudio", "--no-video"
 	}
 	cmd := exec.Command("mpv", bestaudio, novideo, url)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 	err := cmd.Run()
 	if err != nil {
 		log.Fatal(err)
