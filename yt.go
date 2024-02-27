@@ -43,13 +43,14 @@ func main() {
 	}
 
 	// play media from YT or display URL
-	if u {
-		fmt.Println(nthVideo(query, n))
+	if f {
+		play(query, m)
 	} else {
-		if f {
-			play(query, m)
+		url := nthVideo(query, n)
+		if u {
+			fmt.Println(url)
 		} else {
-			play(nthVideo(query, n), m)
+			play(url, m)
 		}
 	}
 }
@@ -65,13 +66,13 @@ func play(url string, m bool) {
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
 	}
 }
 
 func nthVideo(query string, n int) string {
 	vids := getVideos(query)
-	if 0 > n || n > len(vids) {
+	if 0 >= n || n > len(vids) {
 		log.Fatalln("No video found")
 	}
 	return vids[n-1].url()
