@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"regexp"
 	"slices"
+	"strings"
 )
 
 func main() {
@@ -23,7 +24,7 @@ func main() {
 	flag.IntVar(&n, "n", 1, "Play nth media")
 	flag.Parse()
 
-	query = flag.Arg(0)
+	query = strings.Join(flag.Args(), " ")
 	if query == "" {
 		log.Println(query)
 		log.Fatalln("No query provided")
