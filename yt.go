@@ -18,10 +18,12 @@ func main() {
 	// specify available flags
 	var query string
 	var n int
+	var f bool
 	var m bool
 	var u bool
 
 	// parse CLI args
+	flag.BoolVar(&f, "f", false, "Play from URL")
 	flag.BoolVar(&u, "u", false, "Display URL only")
 	flag.BoolVar(&m, "m", false, "Play music only")
 	flag.IntVar(&n, "n", 1, "Play nth media")
@@ -35,11 +37,14 @@ func main() {
 	}
 
 	// play media from YT or display URL
-	url := nthVideo(query, n)
 	if u {
-		fmt.Println(url)
+		fmt.Println(nthVideo(query, n))
 	} else {
-		play(url, m)
+		if f {
+			play(query, m)
+		} else {
+			play(nthVideo(query, n), m)
+		}
 	}
 }
 
