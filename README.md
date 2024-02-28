@@ -64,6 +64,10 @@ Usage of ytgo:
 
     -   **PS**: The URL must be quoted to avoid parsing by the shell
 
+-   Find the URL of a video:
+
+    `ytgo -u hotaru maiko fujita`
+
 ### Credits
 
 -   [pystardust][pystardust]'s [ytfzf][ytfzf]
