@@ -3,22 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
-	"net/url"
-	"os"
-	"os/exec"
-	"regexp"
-	"slices"
 	"strings"
 )
-
-type VID string
-
-func (v VID) url() string {
-	return "https://www.youtube.com/watch?v=" + string(v)
-}
 
 func main() {
 	// specify available flags
@@ -43,72 +30,15 @@ func main() {
 	}
 
 	// play media from YT or display URL
+	var v VID
 	if f {
-		play(query, m)
+		v = VIDfromURL(query)
 	} else {
-		url := nthVideo(query, n)
-		if u {
-			fmt.Println(url)
-		} else {
-			play(url, m)
-		}
+		v = nthVideo(query, n)
 	}
-}
-
-func play(url string, m bool) {
-	bestaudio, novideo := "", ""
-	if m {
-		bestaudio, novideo = "--ytdl-format=bestaudio", "--no-video"
+	if u {
+		fmt.Println(v.url())
+	} else {
+		v.play(m)
 	}
-	cmd := exec.Command("mpv", bestaudio, novideo, url)
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err := cmd.Run()
-	if err != nil {
-		log.Fatalln(err)
-	}
-}
-
-func nthVideo(query string, n int) string {
-	vids := getVideos(query)
-	if 0 >= n || n > len(vids) {
-		log.Fatalln("No video found")
-	}
-	return vids[n-1].url()
-}
-
-func getVideos(query string) []VID {
-	res := search(query)
-	re := regexp.MustCompile(`(?m)watch\?v=(\S{11})`)
-	matches := re.FindAllStringSubmatch(res, -1)
-	var vids []VID
-	for _, match := range matches {
-		if !slices.Contains(vids, VID(match[1])) {
-			vids = append(vids, VID(match[1]))
-		}
-	}
-	return vids
-}
-
-func search(query string) string {
-	params := url.Values{"search_query": []string{query}}.Encode()
-	return fetch("https://www.youtube.com/results?" + params)
-}
-
-func fetch(url string) string {
-	res, err := http.Get(url)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	// We Read the response body on the line below.
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	// Return the body as string
-	msg := string(body)
-	return msg
 }
