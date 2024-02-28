@@ -12,6 +12,10 @@ on:
     # Allows running this workflow from GitHub Actions tab
     workflow_dispatch:
 
+# Sets permissions of the GITHUB_TOKEN to allow releases
+permissions:
+    contents: write
+
 jobs:
     build:
         runs-on: ubuntu-latest
