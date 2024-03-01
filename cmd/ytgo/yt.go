@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/cybardev/ytgo/internal/app/ytgo"
+	"github.com/cybardev/ytgo/internal/pkg/vid"
 )
 
 func main() {
@@ -32,10 +33,10 @@ func main() {
 	}
 
 	// play media from YT or display URL
-	var v ytgo.VID
+	var v vid.VID
 	var err error
 	if f {
-		v, err = ytgo.VIDfromURL(query)
+		v, err = vid.VIDfromURL(query)
 	} else {
 		v, err = ytgo.NthVideo(query, n)
 	}

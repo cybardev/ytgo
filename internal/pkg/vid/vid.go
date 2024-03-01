@@ -1,4 +1,4 @@
-package ytgo
+package vid
 
 import (
 	"net/url"
@@ -6,12 +6,12 @@ import (
 	"os/exec"
 )
 
-const ytURL = "https://www.youtube.com/"
+const YtURL = "https://www.youtube.com/"
 
 type VID string
 
 func (v VID) URL() string {
-	return ytURL + "watch?v=" + string(v)
+	return YtURL + "watch?v=" + string(v)
 }
 
 func (v VID) Play(m bool) error {
