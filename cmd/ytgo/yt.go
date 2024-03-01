@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"strings"
+
+	"github.com/cybardev/ytgo/internal/app/ytgo"
 )
 
 func main() {
@@ -30,12 +32,12 @@ func main() {
 	}
 
 	// play media from YT or display URL
-	var v VID
+	var v ytgo.VID
 	var err error
 	if f {
-		v, err = VIDfromURL(query)
+		v, err = ytgo.VIDfromURL(query)
 	} else {
-		v, err = nthVideo(query, n)
+		v, err = ytgo.NthVideo(query, n)
 	}
 	if err != nil {
 		log.Fatalln(err)

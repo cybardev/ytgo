@@ -1,4 +1,4 @@
-package main
+package ytgo
 
 import (
 	"errors"
@@ -46,7 +46,7 @@ func getVideos(query string) ([]VID, error) {
 	return vids, nil
 }
 
-func nthVideo(query string, n int) (VID, error) {
+func NthVideo(query string, n int) (VID, error) {
 	vids, err := getVideos(query)
 	if err != nil {
 		return "", err
