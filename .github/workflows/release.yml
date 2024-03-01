@@ -32,37 +32,37 @@ jobs:
               env:
                   GOOS: linux
                   GOARCH: amd64
-              run: go build -o "bin/ytgo-${GOOS}-${GOARCH}"
+              run: go build -C cmd/ytgo -o "../../bin/ytgo-${GOOS}-${GOARCH}"
 
             - name: Build for Linux (ARM64)
               env:
                   GOOS: linux
                   GOARCH: arm64
-              run: go build -o "bin/ytgo-${GOOS}-${GOARCH}"
+              run: go build -C cmd/ytgo -o "../../bin/ytgo-${GOOS}-${GOARCH}"
 
             - name: Build for MacOS (x86-64)
               env:
                   GOOS: darwin
                   GOARCH: amd64
-              run: go build -o "bin/ytgo-${GOOS}-${GOARCH}"
+              run: go build -C cmd/ytgo -o "../../bin/ytgo-${GOOS}-${GOARCH}"
 
             - name: Build for MacOS (ARM64)
               env:
                   GOOS: darwin
                   GOARCH: arm64
-              run: go build -o "bin/ytgo-${GOOS}-${GOARCH}"
+              run: go build -C cmd/ytgo -o "../../bin/ytgo-${GOOS}-${GOARCH}"
 
             - name: Build for Windows (x86-64)
               env:
                   GOOS: windows
                   GOARCH: amd64
-              run: go build -o "bin/ytgo-${GOOS}-${GOARCH}.exe"
+              run: go build -C cmd/ytgo -o "../../bin/ytgo-${GOOS}-${GOARCH}.exe"
 
             - name: Build for Windows (ARM64)
               env:
                   GOOS: windows
                   GOARCH: arm64
-              run: go build -o "bin/ytgo-${GOOS}-${GOARCH}.exe"
+              run: go build -C cmd/ytgo -o "../../bin/ytgo-${GOOS}-${GOARCH}.exe"
 
             - name: Create Release
               uses: "marvinpinto/action-automatic-releases@latest"
