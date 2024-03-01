@@ -9,9 +9,11 @@ import (
 
 func main() {
 	// specify available flags
-	var f, m, u bool
-	var n int
-	var query string
+	var (
+		f, m, u bool
+		n       int
+		query   string
+	)
 
 	// parse CLI args
 	flag.BoolVar(&f, "f", false, "Play from URL")
