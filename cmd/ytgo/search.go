@@ -1,4 +1,4 @@
-package ytgo
+package main
 
 import (
 	"errors"
@@ -7,8 +7,6 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
-
-	"github.com/cybardev/ytgo/internal/pkg/vid"
 )
 
 func fetch(u string) (string, error) {
@@ -27,20 +25,20 @@ func fetch(u string) (string, error) {
 
 func search(query string) (string, error) {
 	params := url.Values{"search_query": []string{query}}.Encode()
-	return fetch(vid.YtURL + "results?" + params)
+	return fetch(YtURL + "results?" + params)
 }
 
-func getVideos(query string) ([]vid.VID, error) {
+func getVideos(query string) ([]VID, error) {
 	res, err := search(query)
 	if err != nil {
 		return nil, err
 	}
 	re := regexp.MustCompile(`(?m)watch\?v=(\S{11})`)
 	matches := re.FindAllStringSubmatch(res, -1)
-	var v vid.VID
-	var vids []vid.VID
+	var v VID
+	var vids []VID
 	for _, match := range matches {
-		v = vid.VID(match[1])
+		v = VID(match[1])
 		if !slices.Contains(vids, v) {
 			vids = append(vids, v)
 		}
@@ -48,7 +46,7 @@ func getVideos(query string) ([]vid.VID, error) {
 	return vids, nil
 }
 
-func NthVideo(query string, n int) (vid.VID, error) {
+func NthVideo(query string, n int) (VID, error) {
 	vids, err := getVideos(query)
 	if err != nil {
 		return "", err

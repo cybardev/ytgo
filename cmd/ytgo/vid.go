@@ -1,4 +1,4 @@
-package vid
+package main
 
 import (
 	"net/url"
