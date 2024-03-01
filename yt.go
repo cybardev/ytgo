@@ -9,36 +9,41 @@ import (
 
 func main() {
 	// specify available flags
-	var query string
+	var f, m, u bool
 	var n int
-	var f bool
-	var m bool
-	var u bool
+	var query string
 
 	// parse CLI args
-	flag.IntVar(&n, "n", 1, "Play nth media")
 	flag.BoolVar(&f, "f", false, "Play from URL")
 	flag.BoolVar(&m, "m", false, "Play music only")
 	flag.BoolVar(&u, "u", false, "Display URL only")
+	flag.IntVar(&n, "n", 1, "Play nth media")
 	flag.Parse()
 
 	query = strings.Join(flag.Args(), " ")
 	if query == "" {
 		flag.Usage()
 		fmt.Println()
-		log.Fatalln("No query provided")
+		log.Fatalln("no query provided")
 	}
 
 	// play media from YT or display URL
 	var v VID
+	var err error
 	if f {
-		v = VIDfromURL(query)
+		v, err = VIDfromURL(query)
 	} else {
-		v = nthVideo(query, n)
+		v, err = nthVideo(query, n)
+	}
+	if err != nil {
+		log.Fatalln(err)
 	}
 	if u {
-		fmt.Println(v.url())
+		fmt.Println(v.URL())
 	} else {
-		v.play(m)
+		err = v.Play(m)
+		if err != nil {
+			log.Fatalln(err)
+		}
 	}
 }

@@ -1,37 +1,39 @@
 package main
 
 import (
-	"log"
 	"net/url"
 	"os"
 	"os/exec"
 )
 
+const ytURL = "https://www.youtube.com/"
+
 type VID string
 
-func (v VID) url() string {
-	return "https://www.youtube.com/watch?v=" + string(v)
+func (v VID) URL() string {
+	return ytURL + "watch?v=" + string(v)
 }
 
-func (v VID) play(m bool) {
+func (v VID) Play(m bool) error {
 	bestaudio, novideo := "", ""
 	if m {
 		bestaudio, novideo = "--ytdl-format=bestaudio", "--no-video"
 	}
-	cmd := exec.Command("mpv", bestaudio, novideo, v.url())
+	cmd := exec.Command("mpv", bestaudio, novideo, v.URL())
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
+	return nil
 }
 
-func VIDfromURL(s string) VID {
+func VIDfromURL(s string) (VID, error) {
 	u, err := url.Parse(s)
 	if err != nil {
-		log.Fatalln(err)
+		return "", err
 	}
-	return VID(u.Query().Get("v"))
+	return VID(u.Query().Get("v")), nil
 }

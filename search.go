@@ -1,53 +1,58 @@
 package main
 
 import (
+	"errors"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"regexp"
 	"slices"
 )
 
-func fetch(u string) string {
+func fetch(u string) (string, error) {
 	res, err := http.Get(u)
 	if err != nil {
-		log.Fatalln(err)
+		return "", err
 	}
+	defer res.Body.Close()
 
-	// We Read the response body on the line below.
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		log.Fatalln(err)
+		return "", err
 	}
-
-	// Return the body as string
-	msg := string(body)
-	return msg
+	return string(body), nil
 }
 
-func search(query string) string {
+func search(query string) (string, error) {
 	params := url.Values{"search_query": []string{query}}.Encode()
-	return fetch("https://www.youtube.com/results?" + params)
+	return fetch(ytURL + "results?" + params)
 }
 
-func getVideos(query string) []VID {
-	res := search(query)
+func getVideos(query string) ([]VID, error) {
+	res, err := search(query)
+	if err != nil {
+		return nil, err
+	}
 	re := regexp.MustCompile(`(?m)watch\?v=(\S{11})`)
 	matches := re.FindAllStringSubmatch(res, -1)
+	var v VID
 	var vids []VID
 	for _, match := range matches {
-		if !slices.Contains(vids, VID(match[1])) {
-			vids = append(vids, VID(match[1]))
+		v = VID(match[1])
+		if !slices.Contains(vids, v) {
+			vids = append(vids, v)
 		}
 	}
-	return vids
+	return vids, nil
 }
 
-func nthVideo(query string, n int) VID {
-	vids := getVideos(query)
-	if 0 >= n || n > len(vids) {
-		log.Fatalln("No video found")
+func nthVideo(query string, n int) (VID, error) {
+	vids, err := getVideos(query)
+	if err != nil {
+		return "", err
 	}
-	return vids[n-1]
+	if n <= 0 || n > len(vids) {
+		return "", errors.New("no video found")
+	}
+	return vids[n-1], nil
 }
