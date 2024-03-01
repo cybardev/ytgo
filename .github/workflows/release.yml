@@ -6,8 +6,7 @@ name: Build and Release Go binaries
 
 on:
     push:
-        branches: ["main"]
-        paths: ["*.go"]
+        tags: ["v*"]
 
     # Allows running this workflow from GitHub Actions tab
     workflow_dispatch:
@@ -68,8 +67,6 @@ jobs:
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
-                  automatic_release_tag: "latest"
                   prerelease: false
-                  title: "yt.go"
                   files: |
                       bin/ytgo-*
