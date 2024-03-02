@@ -1,12 +1,27 @@
 package main
 
 import (
+	"fmt"
 	"net/url"
 	"os"
 	"os/exec"
 )
 
 const YtURL = "https://www.youtube.com/"
+
+type VideoMap map[VID]Video
+
+type Video struct {
+	Id       VID    `json:"id"`
+	Title    string `json:"title"`
+	Channel  string `json:"channel"`
+	Duration string `json:"duration_string"`
+	Url      string `json:"original_url"`
+}
+
+func (v Video) Desc() string {
+	return fmt.Sprintf("(%s) [%s]", v.Channel, v.Duration)
+}
 
 type VID string
 

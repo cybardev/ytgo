@@ -1,10 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
 	"net/url"
+	"os/exec"
 	"regexp"
 	"slices"
 )
@@ -55,4 +57,20 @@ func NthVideo(query string, n int) (VID, error) {
 		return "", errors.New("no video found")
 	}
 	return vids[n-1], nil
+}
+
+func fetchVideoInfo(id VID) (Video, error) {
+	j := "%(.{id,title,channel,duration_string,original_url})#j"
+	out, err := exec.Command("yt-dlp", "-O", j, YtURL+"watch?v="+string(id)).Output()
+	if err != nil {
+		return Video{}, err
+	}
+
+	var v Video
+	err = json.Unmarshal(out, &v)
+	if err != nil {
+		return Video{}, err
+	}
+
+	return v, nil
 }

@@ -10,13 +10,14 @@ import (
 func main() {
 	// specify available flags
 	var (
-		f, m, u bool
-		n       int
-		query   string
+		f, l, m, u bool
+		n          int
+		query      string
 	)
 
 	// parse CLI args
 	flag.BoolVar(&f, "f", false, "Play from URL")
+	flag.BoolVar(&l, "l", false, "Select from list")
 	flag.BoolVar(&m, "m", false, "Play music only")
 	flag.BoolVar(&u, "u", false, "Display URL only")
 	flag.IntVar(&n, "n", 1, "Play nth media")
@@ -35,7 +36,15 @@ func main() {
 	if f {
 		v, err = VIDfromURL(query)
 	} else {
-		v, err = NthVideo(query, n)
+		if l {
+			v, err = VIDFromMenu(query)
+			if err == nil && v == "" {
+				fmt.Println("No video selected.\nExiting...")
+				return
+			}
+		} else {
+			v, err = NthVideo(query, n)
+		}
 	}
 	if err != nil {
 		log.Fatalln(err)
