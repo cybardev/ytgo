@@ -12,6 +12,8 @@ Click to navigate.
 
 -   [Dependencies](#dependencies)
 -   [Installation](#installation)
+    -   [Manual](#manual)
+    -   [With Go](#with-go)
 -   [Usage](#usage)
     -   [Examples](#examples)
 -   [Credits](#credits)
