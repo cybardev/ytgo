@@ -4,11 +4,14 @@ import "encoding/json"
 
 type YTRES string
 
-func (r YTRES) Parse() []Video {
+func (r YTRES) Parse() ([]Video, error) {
 	var j interface{}
-	json.Unmarshal([]byte(r), &j)
+	err := json.Unmarshal([]byte(r), &j)
+	if err != nil {
+		return nil, err
+	}
 	res := j.(map[string]interface{})["contents"].(map[string]interface{})["twoColumnSearchResultsRenderer"].(map[string]interface{})["primaryContents"].(map[string]interface{})["sectionListRenderer"].(map[string]interface{})["contents"].([]interface{})[0].(map[string]interface{})["itemSectionRenderer"].(map[string]interface{})["contents"].([]interface{})
-	return getVideoList(&res)
+	return getVideoList(&res), nil
 }
 
 func getVideoList(d *[]interface{}) []Video {
