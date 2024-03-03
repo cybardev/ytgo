@@ -9,9 +9,19 @@ import (
 
 const YtURL = "https://www.youtube.com/"
 
-type VideoMap map[VID]Video
-
 type VID string
+
+func (v VID) URL() string {
+	return YtURL + "watch?v=" + string(v)
+}
+
+func GetVIDfromURL(s string) (VID, error) {
+	u, err := url.Parse(s)
+	if err != nil {
+		return VID(""), err
+	}
+	return VID(u.Query().Get("v")), nil
+}
 
 type Video struct {
 	Id       VID    `json:"id"`
@@ -38,16 +48,4 @@ func (v Video) Play(m bool) error {
 		return err
 	}
 	return nil
-}
-
-func (v VID) URL() string {
-	return YtURL + "watch?v=" + string(v)
-}
-
-func VIDfromURL(s string) (VID, error) {
-	u, err := url.Parse(s)
-	if err != nil {
-		return VID(""), err
-	}
-	return VID(u.Query().Get("v")), nil
 }
