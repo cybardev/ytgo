@@ -1,0 +1,14 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+ul.downloads {
+  display: flex;
+  justify-content: center;
+}
+
+.downloads li {
+  float:none;
+  border: none;
+}
