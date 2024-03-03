@@ -4,7 +4,7 @@
 
 **PS**: this is a `Python -> Go` translation of [cybardev/ytpy][ytpy] which itself was a `Shell -> Python` translation of [pystardust/ytfzf][ytfzf] _(before I rewrote it from scratch)_
 
-> **WARNING**: Windows is likely to not run. I'm assuming because of how `mpv` is executed by the program. Feel free to fork and make a PR if you would like to fix this. Meanwhile, WSL can be used to run the Linux binaries.
+> **WARNING**: Windows is likely to not run. I'm assuming because of how `mpv` is executed by the program. Feel free to fork and make a PR if you would like to fix this. Meanwhile, WSL may be used to run the Linux binaries.
 
 ### Table of Contents
 
@@ -25,8 +25,26 @@ Click to navigate.
 
 ### Installation
 
+#### With Go
+
+-   Run the following command:
+
+    ```sh
+    go install github.com/cybardev/ytgo/cmd/ytgo@latest
+    ```
+
+-   Ensure `$GOPATH/bin` is added to `$PATH`. An easy way is to add this line to `~/.profile`:
+
+    ```sh
+    export PATH="$(go env GOPATH):$PATH"
+    ```
+
+#### Manual
+
 -   Download the file from the Releases page: [ytgo-{os}-{arch}][release]
+
     -   **PS**: Make sure to choose the right binary for your OS and architecture
+
 -   Place it on your `$PATH` and make it executable.
 
 ### Usage
