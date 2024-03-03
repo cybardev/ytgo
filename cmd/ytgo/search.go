@@ -9,7 +9,7 @@ import (
 )
 
 func GetNthVideo(query string, n int) (Video, error) {
-	vids, err := getVideos(query)
+	vids, err := GetVideos(query)
 	if err != nil {
 		return Video{}, err
 	}
@@ -19,7 +19,7 @@ func GetNthVideo(query string, n int) (Video, error) {
 	return vids[n-1], nil
 }
 
-func getVideos(query string) ([]Video, error) {
+func GetVideos(query string) ([]Video, error) {
 	res, err := getSearchResults(query)
 	if err != nil {
 		return nil, err
