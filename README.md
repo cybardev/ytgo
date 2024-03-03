@@ -25,7 +25,17 @@ Click to navigate.
 
 ### Installation
 
+#### Manual
+
+-   Download the file from the Releases page: [ytgo-{os}-{arch}][release]
+
+    -   **PS**: Make sure to choose the right binary for your OS and architecture
+
+-   Place it on your `$PATH` and make it executable.
+
 #### With Go
+
+> **PS**: the pkg.go.dev registry may have an outdated version. If you encounter bugs or feature disparity, please try the [Manual installation](#Manual) method for the latest updates
 
 -   Run the following command:
 
@@ -38,14 +48,6 @@ Click to navigate.
     ```sh
     export PATH="$(go env GOPATH):$PATH"
     ```
-
-#### Manual
-
--   Download the file from the Releases page: [ytgo-{os}-{arch}][release]
-
-    -   **PS**: Make sure to choose the right binary for your OS and architecture
-
--   Place it on your `$PATH` and make it executable.
 
 ### Usage
 
