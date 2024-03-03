@@ -31,26 +31,26 @@ func main() {
 	}
 
 	// play media from YT or display URL
-	var v VID
+	var v Video
 	var err error
 	if f {
-		v, err = VIDfromURL(query)
+		v.Id, err = VIDfromURL(query)
 	} else {
 		if l {
-			v, err = VIDFromMenu(query)
-			if err == nil && v == "" {
+			v, err = VideoFromMenu(query)
+			if err == nil && (v == Video{}) {
 				fmt.Println("No video selected.\nExiting...")
 				return
 			}
 		} else {
-			v, err = NthVideo(query, n)
+			v.Id, err = NthVID(query, n)
 		}
 	}
 	if err != nil {
 		log.Fatalln(err)
 	}
 	if u {
-		fmt.Println(v.URL())
+		fmt.Println(v.Id.URL())
 	} else {
 		err = v.Play(m)
 		if err != nil {

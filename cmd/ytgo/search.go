@@ -11,26 +11,18 @@ import (
 	"slices"
 )
 
-func fetch(u string) (string, error) {
-	res, err := http.Get(u)
+func NthVID(query string, n int) (VID, error) {
+	vids, err := getVIDs(query)
 	if err != nil {
-		return "", err
+		return VID(""), err
 	}
-	defer res.Body.Close()
-
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		return "", err
+	if n <= 0 || n > len(vids) {
+		return "", errors.New("no video found")
 	}
-	return string(body), nil
+	return vids[n-1], nil
 }
 
-func search(query string) (string, error) {
-	params := url.Values{"search_query": []string{query}}.Encode()
-	return fetch(YtURL + "results?" + params)
-}
-
-func getVideos(query string) ([]VID, error) {
+func getVIDs(query string) ([]VID, error) {
 	res, err := search(query)
 	if err != nil {
 		return nil, err
@@ -48,20 +40,28 @@ func getVideos(query string) ([]VID, error) {
 	return vids, nil
 }
 
-func NthVideo(query string, n int) (VID, error) {
-	vids, err := getVideos(query)
+func search(query string) (string, error) {
+	params := url.Values{"search_query": []string{query}}.Encode()
+	return fetch(YtURL + "results?" + params)
+}
+
+func fetch(u string) (string, error) {
+	res, err := http.Get(u)
 	if err != nil {
 		return "", err
 	}
-	if n <= 0 || n > len(vids) {
-		return "", errors.New("no video found")
+	defer res.Body.Close()
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return "", err
 	}
-	return vids[n-1], nil
+	return string(body), nil
 }
 
 func fetchVideoInfo(id VID) (Video, error) {
-	j := "%(.{id,title,channel,duration_string,original_url})#j"
-	out, err := exec.Command("yt-dlp", "-O", j, YtURL+"watch?v="+string(id)).Output()
+	j := "%(.{id,title,channel,duration_string})#j"
+	out, err := exec.Command("yt-dlp", "-O", j, id.URL()).Output()
 	if err != nil {
 		return Video{}, err
 	}

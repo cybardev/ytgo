@@ -4,19 +4,22 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
 
-func VIDFromMenu(query string) (VID, error) {
-	vids, err := getVideos(query)
+func VideoFromMenu(query string) (Video, error) {
+	vids, err := getVIDs(query)
 	if err != nil {
-		return "", err
+		return Video{}, err
 	}
-	m := make(VideoMap, len(vids))
-	return menuUI(&vids, &m)
+	n := min(10, len(vids))
+	v := vids[:n]
+	m := make(VideoMap, n)
+	return menuUI(&v, &m)
 }
 
-func menuUI(vids *[]VID, m *VideoMap) (VID, error) {
+func menuUI(vids *[]VID, m *VideoMap) (Video, error) {
 	var wg sync.WaitGroup
 	wg.Add(len(*vids))
 
@@ -27,14 +30,9 @@ func menuUI(vids *[]VID, m *VideoMap) (VID, error) {
 
 	wg.Wait()
 
-	var v VID
+	tview.Styles.PrimitiveBackgroundColor = tcell.ColorDefault
 	app := tview.NewApplication()
-	list := videoList(app, &v, m, vids)
-	err := app.SetRoot(list, true).EnableMouse(true).Run()
-	if err != nil {
-		return "", err
-	}
-	return v, nil
+	return chooseFromList(app, m, vids)
 }
 
 func mapVideos(id VID, m *VideoMap, wg *sync.WaitGroup) error {
@@ -47,22 +45,27 @@ func mapVideos(id VID, m *VideoMap, wg *sync.WaitGroup) error {
 	return nil
 }
 
-func videoList(app *tview.Application, selected *VID, m *VideoMap, vids *[]VID) *tview.List {
+func chooseFromList(app *tview.Application, m *VideoMap, vids *[]VID) (Video, error) {
+	var selected Video
+
 	l := tview.NewList()
 	l = l.
 		AddItem("Quit", "Press to exit", 'q', func() {
-			*selected = ""
+			selected = Video{}
 			app.Stop()
 		})
 
-	var v Video
-	for _, vid := range *vids {
-		v = (*m)[vid]
-		l.AddItem("\n"+v.Title, v.Desc(), 0, func() {
-			*selected = vid
+	for i, vid := range *vids {
+		v := (*m)[vid]
+		l.AddItem(v.Title, v.Desc(), rune(i+48), func() {
+			selected = v
 			app.Stop()
 		})
 	}
 
-	return l
+	err := app.SetRoot(l, true).EnableMouse(true).Run()
+	if err != nil {
+		return Video{}, err
+	}
+	return selected, nil
 }
