@@ -10,12 +10,12 @@
 
 Click to navigate.
 
--   [Dependencies](#Dependencies)
--   [Installation](#Installation)
--   [Usage](#Usage)
-    -   [Examples](#Examples)
--   [Credits](#Credits)
--   [Extras](#Extras)
+-   [Dependencies](#dependencies)
+-   [Installation](#installation)
+-   [Usage](#usage)
+    -   [Examples](#examples)
+-   [Credits](#credits)
+-   [Extras](#extras)
 
 ### Dependencies
 
@@ -35,7 +35,7 @@ Click to navigate.
 
 #### With Go
 
-> **PS**: the pkg.go.dev registry may have an outdated version. If you encounter bugs or feature disparity, please try the [Manual installation](#Manual) method for the latest updates
+> **PS**: the pkg.go.dev registry may have an outdated version. If you encounter bugs or feature disparity, please try the [Manual installation](#manual) method for the latest updates
 
 -   Run the following command:
 
