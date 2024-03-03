@@ -15,7 +15,6 @@ Click to navigate.
 -   [Usage](#usage)
     -   [Examples](#examples)
 -   [Credits](#credits)
--   [Extras](#extras)
 
 ### Dependencies
 
