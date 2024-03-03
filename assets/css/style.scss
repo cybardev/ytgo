@@ -3,6 +3,14 @@
 
 @import "{{ site.theme }}";
 
+.wrapper {
+  width: 900px;
+}
+
+.wrapper > section {
+  width: 536px;
+}
+
 ul.downloads {
   display: flex;
   justify-content: center;
