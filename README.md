@@ -35,11 +35,12 @@ Click to navigate.
 
 ```sh
 Usage of ytgo:
-  -f    Play from URL
-  -m    Play music only
+  -f	Play from URL
+  -l	Select from list
+  -m	Play music only
   -n int
-        Play nth media (default 1)
-  -u    Display URL only
+    	Play nth media (default 1)
+  -u	Display URL only
 ```
 
 **HINT**: [Here][mpv_hotkeys]'s a list of mpv keyboard shortcuts for your convenience.
@@ -56,7 +57,7 @@ Usage of ytgo:
 
 -   Play the third search result:
 
-    `ytgo -n 3 marmot scream`
+    `ytgo -n 3 racing into the night`
 
 -   Play an audio from URL:
 
@@ -67,6 +68,10 @@ Usage of ytgo:
 -   Find the URL of a video:
 
     `ytgo -u hotaru maiko fujita`
+
+-   Interactive selection mode:
+
+    `ytgo -l marmot scream meme`
 
 ### Credits
 
