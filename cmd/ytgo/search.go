@@ -1,51 +1,43 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
 	"net/url"
-	"os/exec"
 	"regexp"
-	"slices"
 )
 
-func NthVID(query string, n int) (VID, error) {
-	vids, err := getVIDs(query)
+func GetNthVideo(query string, n int) (Video, error) {
+	vids, err := getVideos(query)
 	if err != nil {
-		return VID(""), err
+		return Video{}, err
 	}
 	if n <= 0 || n > len(vids) {
-		return "", errors.New("no video found")
+		return Video{}, errors.New("no video found")
 	}
 	return vids[n-1], nil
 }
 
-func getVIDs(query string) ([]VID, error) {
-	res, err := search(query)
+func getVideos(query string) ([]Video, error) {
+	res, err := getSearchResults(query)
 	if err != nil {
 		return nil, err
 	}
-	re := regexp.MustCompile(`(?m)watch\?v=(\S{11})`)
-	matches := re.FindAllStringSubmatch(res, -1)
-	var v VID
-	var vids []VID
-	for _, match := range matches {
-		v = VID(match[1])
-		if !slices.Contains(vids, v) {
-			vids = append(vids, v)
-		}
-	}
-	return vids, nil
+	return res.Parse()
 }
 
-func search(query string) (string, error) {
+func getSearchResults(query string) (YTRES, error) {
 	params := url.Values{"search_query": []string{query}}.Encode()
-	return get(YtURL + "results?" + params)
+	s, err := getRequest(YtURL + "results?" + params)
+	if err != nil {
+		return YTRES(""), err
+	}
+	re := regexp.MustCompile(`var ytInitialData = ({.*?});`)
+	return YTRES(re.FindStringSubmatch(s)[1]), nil
 }
 
-func get(u string) (string, error) {
+func getRequest(u string) (string, error) {
 	res, err := http.Get(u)
 	if err != nil {
 		return "", err
@@ -57,20 +49,4 @@ func get(u string) (string, error) {
 		return "", err
 	}
 	return string(body), nil
-}
-
-func getVideoInfo(id VID) (Video, error) {
-	j := "%(.{id,title,channel,duration_string})#j"
-	out, err := exec.Command("yt-dlp", "-O", j, id.URL()).Output()
-	if err != nil {
-		return Video{}, err
-	}
-
-	var v Video
-	err = json.Unmarshal(out, &v)
-	if err != nil {
-		return Video{}, err
-	}
-
-	return v, nil
 }

@@ -34,16 +34,16 @@ func main() {
 	var v Video
 	var err error
 	if f {
-		v.Id, err = VIDfromURL(query)
+		v.Id, err = GetVIDfromURL(query)
 	} else {
 		if l {
-			v, err = VideoFromMenu(query)
+			v, err = GetVideoFromMenu(query)
 			if err == nil && (v == Video{}) {
 				fmt.Println("No video selected.\nExiting...")
 				return
 			}
 		} else {
-			v.Id, err = NthVID(query, n)
+			v, err = GetNthVideo(query, n)
 		}
 	}
 	if err != nil {
