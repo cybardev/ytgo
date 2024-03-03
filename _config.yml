@@ -1,3 +1,4 @@
 theme: jekyll-theme-minimal
 title: yt.go
 description: A Go program to find and watch YouTube videos from the terminal without requiring API keys.
+show_downloads: true
