@@ -42,10 +42,10 @@ func getVIDs(query string) ([]VID, error) {
 
 func search(query string) (string, error) {
 	params := url.Values{"search_query": []string{query}}.Encode()
-	return fetch(YtURL + "results?" + params)
+	return get(YtURL + "results?" + params)
 }
 
-func fetch(u string) (string, error) {
+func get(u string) (string, error) {
 	res, err := http.Get(u)
 	if err != nil {
 		return "", err
@@ -59,7 +59,7 @@ func fetch(u string) (string, error) {
 	return string(body), nil
 }
 
-func fetchVideoInfo(id VID) (Video, error) {
+func getVideoInfo(id VID) (Video, error) {
 	j := "%(.{id,title,channel,duration_string})#j"
 	out, err := exec.Command("yt-dlp", "-O", j, id.URL()).Output()
 	if err != nil {

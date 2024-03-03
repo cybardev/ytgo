@@ -32,12 +32,12 @@ func menuUI(vids *[]VID, m *VideoMap) (Video, error) {
 
 	tview.Styles.PrimitiveBackgroundColor = tcell.ColorDefault
 	app := tview.NewApplication()
-	return chooseFromList(app, m, vids)
+	return getVideoFromList(app, m, vids)
 }
 
 func mapVideos(id VID, m *VideoMap, wg *sync.WaitGroup) error {
 	defer (*wg).Done()
-	v, err := fetchVideoInfo(id)
+	v, err := getVideoInfo(id)
 	if err != nil {
 		return err
 	}
@@ -45,7 +45,7 @@ func mapVideos(id VID, m *VideoMap, wg *sync.WaitGroup) error {
 	return nil
 }
 
-func chooseFromList(app *tview.Application, m *VideoMap, vids *[]VID) (Video, error) {
+func getVideoFromList(app *tview.Application, m *VideoMap, vids *[]VID) (Video, error) {
 	var selected Video
 
 	l := tview.NewList()
