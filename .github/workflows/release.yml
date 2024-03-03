@@ -37,6 +37,21 @@ jobs:
                   GOARCH: ${{ matrix.arch }}
               run: go build -C cmd/ytgo -o "../../bin/ytgo-${GOOS}-${GOARCH}"
 
+            - name: Upload ${{ matrix.os }} binaries
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ytgo-${{ matrix.os }}-${{ matrix.arch }}
+                  path: |
+                      bin/ytgo-${{ matrix.os }}-${{ matrix.arch }}
+
+    release:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Download binaries
+              uses: actions/download-artifact@v2
+              with:
+                  path: bin/
             - name: Create Release
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
