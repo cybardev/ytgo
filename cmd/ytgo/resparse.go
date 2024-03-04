@@ -17,8 +17,8 @@ func (r YTRES) Parse() ([]Video, error) {
 func getVideoList(d *[]interface{}) []Video {
 	var vids []Video
 	for _, i := range *d {
-		v, ok := getVideoFromEntry(&i)
-		if !ok {
+		v, isVideo := getVideoFromEntry(&i)
+		if !isVideo {
 			continue
 		}
 		vids = append(vids, v)
