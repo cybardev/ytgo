@@ -31,6 +31,9 @@ type Video struct {
 }
 
 func (v Video) String() string {
+	if v.Title == "" {
+		return fmt.Sprintf("%s%s%s", C_CYAN, v.Id.URL(), C_RESET)
+	}
 	return fmt.Sprintf("%s%s %s(%s) %s[%s]%s", C_CYAN, v.Title, C_GREEN, v.Channel, C_RED, v.Duration, C_RESET)
 }
 
@@ -39,11 +42,7 @@ func (v Video) Desc() string {
 }
 
 func (v Video) Play(m bool) error {
-	s := v.String()
-	if v.Title == "" {
-		s = C_CYAN + v.Id.URL() + C_RESET
-	}
-	fmt.Println("Playing:", s)
+	fmt.Println("Playing:", v)
 	bestaudio, novideo := "", ""
 	if m {
 		bestaudio, novideo = "--ytdl-format=bestaudio", "--no-video"
