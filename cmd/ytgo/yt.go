@@ -8,11 +8,10 @@ import (
 )
 
 const (
-	C_RED    = "\033[31m"
-	C_GREEN  = "\033[32m"
-	C_YELLOW = "\033[33m"
-	C_CYAN   = "\033[36m"
-	C_RESET  = "\033[0m"
+	C_RED   string = "\x1b[31m"
+	C_GREEN string = "\x1b[32m"
+	C_CYAN  string = "\x1b[36m"
+	C_RESET string = "\x1b[0m"
 )
 
 func main() {
