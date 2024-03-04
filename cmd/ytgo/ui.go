@@ -10,7 +10,7 @@ func GetVideoFromMenu(query string) (Video, error) {
 	if err != nil {
 		return Video{}, err
 	}
-	n := min(10, len(vids))
+	n := min(36, len(vids))
 	v := vids[:n]
 	tview.Styles.PrimitiveBackgroundColor = tcell.ColorDefault
 	app := tview.NewApplication()
@@ -28,7 +28,7 @@ func getVideoFromList(app *tview.Application, vids *[]Video) (Video, error) {
 		})
 
 	for i, v := range *vids {
-		l.AddItem(v.Title, v.Desc(), rune(i+48), func() {
+		l.AddItem(v.Title, v.Desc(), getShortcut(i), func() {
 			selected = v
 			app.Stop()
 		})
@@ -39,4 +39,14 @@ func getVideoFromList(app *tview.Application, vids *[]Video) (Video, error) {
 		return Video{}, err
 	}
 	return selected, nil
+}
+
+func getShortcut(n int) rune {
+	if n > 36 {
+		return 0
+	}
+	if n > 9 {
+		return rune(n + 87)
+	}
+	return rune(n + 48)
 }
