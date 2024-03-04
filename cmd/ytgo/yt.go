@@ -59,7 +59,6 @@ func main() {
 		fmt.Println(v.Id.URL())
 		return
 	}
-	fmt.Printf("%sPlaying:%s %s\n", C_YELLOW, C_RESET, v)
 	err = v.Play(m)
 	if err != nil {
 		log.Fatalln(err)
