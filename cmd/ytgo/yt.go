@@ -49,10 +49,10 @@ func main() {
 	}
 	if u {
 		fmt.Println(v.Id.URL())
-	} else {
-		err = v.Play(m)
-		if err != nil {
-			log.Fatalln(err)
-		}
+		return
+	}
+	err = v.Play(m)
+	if err != nil {
+		log.Fatalln(err)
 	}
 }
