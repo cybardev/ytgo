@@ -35,16 +35,14 @@ func main() {
 	var err error
 	if f {
 		v.Id, err = GetVIDfromURL(query)
-	} else {
-		if l {
-			v, err = GetVideoFromMenu(query)
-			if err == nil && (v == Video{}) {
-				fmt.Println("No video selected.\nExiting...")
-				return
-			}
-		} else {
-			v, err = GetNthVideo(query, n)
+	} else if l {
+		v, err = GetVideoFromMenu(query)
+		if err == nil && (v == Video{}) {
+			fmt.Println("No video selected.\nExiting...")
+			return
 		}
+	} else {
+		v, err = GetNthVideo(query, n)
 	}
 	if err != nil {
 		log.Fatalln(err)
