@@ -10,11 +10,9 @@ func GetVideoFromMenu(query string) (Video, error) {
 	if err != nil {
 		return Video{}, err
 	}
-	n := min(36, len(vids))
-	v := vids[:n]
 	tview.Styles.PrimitiveBackgroundColor = tcell.ColorDefault
 	app := tview.NewApplication()
-	return getVideoFromList(app, &v)
+	return getVideoFromList(app, &vids)
 }
 
 func getVideoFromList(app *tview.Application, vids *[]Video) (Video, error) {
