@@ -7,6 +7,14 @@ import (
 	"strings"
 )
 
+const (
+	C_RED    = "\033[31m"
+	C_GREEN  = "\033[32m"
+	C_YELLOW = "\033[33m"
+	C_CYAN   = "\033[36m"
+	C_RESET  = "\033[0m"
+)
+
 func main() {
 	// specify available flags
 	var (
@@ -51,6 +59,7 @@ func main() {
 		fmt.Println(v.Id.URL())
 		return
 	}
+	fmt.Printf("%sPlaying:%s %s\n", C_YELLOW, C_RESET, v)
 	err = v.Play(m)
 	if err != nil {
 		log.Fatalln(err)
