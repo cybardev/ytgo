@@ -28,15 +28,15 @@ func getVideoList(d *[]interface{}) []Video {
 }
 
 func getVideoFromEntry(i *interface{}) (Video, bool) {
-	x := (*i).(map[string]interface{})["videoRenderer"]
-	if x == nil {
+	j := (*i).(map[string]interface{})["videoRenderer"]
+	if j == nil {
 		return Video{}, false // when radioRenderer, shelfRenderer, reelShelfRenderer, etc.
 	}
-	y := x.(map[string]interface{})
+	k := j.(map[string]interface{})
 	return Video{
-		Id:       VID(y["videoId"].(string)),
-		Title:    y["title"].(map[string]interface{})["runs"].([]interface{})[0].(map[string]interface{})["text"].(string),
-		Channel:  y["ownerText"].(map[string]interface{})["runs"].([]interface{})[0].(map[string]interface{})["text"].(string),
-		Duration: y["lengthText"].(map[string]interface{})["simpleText"].(string),
+		Id:       VID(k["videoId"].(string)),
+		Title:    k["title"].(map[string]interface{})["runs"].([]interface{})[0].(map[string]interface{})["text"].(string),
+		Channel:  k["ownerText"].(map[string]interface{})["runs"].([]interface{})[0].(map[string]interface{})["text"].(string),
+		Duration: k["lengthText"].(map[string]interface{})["simpleText"].(string),
 	}, true
 }
