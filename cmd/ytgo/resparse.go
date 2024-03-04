@@ -20,10 +20,9 @@ func getVideoList(d *[]interface{}) []Video {
 	var vids []Video
 	for _, i := range *d {
 		v, isVideo := getVideoFromEntry(&i)
-		if !isVideo {
-			continue
+		if isVideo {
+			vids = append(vids, v)
 		}
-		vids = append(vids, v)
 	}
 	return vids
 }
