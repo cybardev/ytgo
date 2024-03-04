@@ -98,6 +98,7 @@ Usage of ytgo:
 
 -   [pystardust][pystardust]'s [ytfzf][ytfzf]
 -   [This article][article] I found during my quest to implement a simplified version of ytfzf in Python3
+-   [StackOverflow answer][regex] used for the regex `var ytInitialData = ({.*?});`
 
 <!-- Links -->
 
@@ -110,3 +111,4 @@ Usage of ytgo:
 [pystardust]: https://github.com/pystardust
 [ytfzf]: https://github.com/pystardust/ytfzf
 [article]: https://www.codeproject.com/articles/873060/python-search-youtube-for-video
+[regex]: https://stackoverflow.com/a/68262735
