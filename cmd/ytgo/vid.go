@@ -30,6 +30,10 @@ type Video struct {
 	Duration string `json:"duration_string"`
 }
 
+func (v Video) String() string {
+	return fmt.Sprintf("%s%s %s(%s) %s[%s]%s", C_CYAN, v.Title, C_GREEN, v.Channel, C_RED, v.Duration, C_RESET)
+}
+
 func (v Video) Desc() string {
 	return fmt.Sprintf("(%s) [%s]", v.Channel, v.Duration)
 }
