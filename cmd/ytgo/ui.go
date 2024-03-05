@@ -6,33 +6,33 @@ import (
 )
 
 func GetVideoFromMenu(query string) (*Video, error) {
-	vids, err := GetSearchResults(query)
+	vs, err := GetSearchResults(query)
 	if err != nil {
 		return &Video{}, err
 	}
 	tview.Styles.PrimitiveBackgroundColor = tcell.ColorDefault
 	app := tview.NewApplication()
-	return getVideoFromList(app, vids)
+	return getVideoFromList(app, vs)
 }
 
-func getVideoFromList(app *tview.Application, vids *[]Video) (*Video, error) {
+func getVideoFromList(app *tview.Application, vs *[]Video) (*Video, error) {
 	var selected *Video
 
-	l := tview.NewList()
-	l = l.
+	list := tview.NewList()
+	list = list.
 		AddItem("Quit", "Press to exit", 'q', func() {
 			selected = &Video{}
 			app.Stop()
 		})
 
-	for i, v := range *vids {
-		l.AddItem(v.Title, v.Desc(), getShortcut(i), func() {
+	for i, v := range *vs {
+		list.AddItem(v.Title, v.Desc(), getShortcut(i), func() {
 			selected = &v
 			app.Stop()
 		})
 	}
 
-	err := app.SetRoot(l, true).EnableMouse(true).Run()
+	err := app.SetRoot(list, true).EnableMouse(true).Run()
 	if err != nil {
 		return &Video{}, err
 	}

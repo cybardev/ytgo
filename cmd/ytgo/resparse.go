@@ -49,14 +49,14 @@ func (r YTRES) Parse() (*[]Video, error) {
 }
 
 func getVideoList(j *[]interface{}) *[]Video {
-	var vids []Video
+	var vs []Video
 	for _, i := range *j {
 		v, isVideo := getVideoFromEntry(&i)
 		if isVideo {
-			vids = append(vids, *v)
+			vs = append(vs, *v)
 		}
 	}
-	return &vids
+	return &vs
 }
 
 func getVideoFromEntry(j *interface{}) (*Video, bool) {

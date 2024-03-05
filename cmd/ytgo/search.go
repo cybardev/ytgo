@@ -16,14 +16,14 @@ func GetVideoFromURL(url string) (*Video, error) {
 }
 
 func GetVideoFromSearch(query string, n int) (*Video, error) {
-	vids, err := GetSearchResults(query)
+	vs, err := GetSearchResults(query)
 	if err != nil {
 		return &Video{}, err
 	}
-	if n <= 0 || n > len(*vids) {
+	if n <= 0 || n > len(*vs) {
 		return &Video{}, errors.New("no video found")
 	}
-	return &(*vids)[n-1], nil
+	return &(*vs)[n-1], nil
 }
 
 func GetSearchResults(query string) (*[]Video, error) {
@@ -32,12 +32,12 @@ func GetSearchResults(query string) (*[]Video, error) {
 	if err != nil {
 		return nil, err
 	}
-	v, err := YTRES(r).Parse()
-	return v, err
+	vs, err := YTRES(r).Parse()
+	return vs, err
 }
 
-func GetRequest(u string) (string, error) {
-	res, err := http.Get(u)
+func GetRequest(url string) (string, error) {
+	res, err := http.Get(url)
 	if err != nil {
 		return "", err
 	}
