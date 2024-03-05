@@ -21,15 +21,15 @@ func (r VRES) Parse() (Video, error) {
 	return getVideoFromDetails(&k)
 }
 
-func getVideoFromDetails(d *map[string]interface{}) (Video, error) {
-	t, err := strconv.Atoi((*d)["lengthSeconds"].(string))
+func getVideoFromDetails(j *map[string]interface{}) (Video, error) {
+	t, err := strconv.Atoi((*j)["lengthSeconds"].(string))
 	if err != nil {
 		t = 0
 	}
 	return Video{
-		Id:       VID((*d)["videoId"].(string)),
-		Title:    (*d)["title"].(string),
-		Channel:  (*d)["author"].(string),
+		Id:       VID((*j)["videoId"].(string)),
+		Title:    (*j)["title"].(string),
+		Channel:  (*j)["author"].(string),
 		Duration: fmt.Sprintf("%d:%d", t/60, t%60),
 	}, nil
 }
@@ -48,9 +48,9 @@ func (r YTRES) Parse() ([]Video, error) {
 	return getVideoList(&res), nil
 }
 
-func getVideoList(d *[]interface{}) []Video {
+func getVideoList(j *[]interface{}) []Video {
 	var vids []Video
-	for _, i := range *d {
+	for _, i := range *j {
 		v, isVideo := getVideoFromEntry(&i)
 		if isVideo {
 			vids = append(vids, v)
