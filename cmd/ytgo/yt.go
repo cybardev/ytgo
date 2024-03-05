@@ -11,7 +11,7 @@ const (
 	C_RED   string = "\x1b[31m"
 	C_GREEN string = "\x1b[32m"
 	C_CYAN  string = "\x1b[36m"
-	C_RESET string = "\x1b[0m"
+	C_RESET string = "\x1b[00m"
 )
 
 func main() {
