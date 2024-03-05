@@ -36,7 +36,8 @@ jobs:
                   GOOS: ${{ matrix.os }}
                   GOARCH: ${{ matrix.arch }}
               run: |
-                  go build -C cmd/ytgo -o "../../bin/ytgo-${GOOS}-${GOARCH}"
+                  [ "$GOOS" = "windows" ] && EXT=".exe" || EXT=""
+                  go build -C cmd/ytgo -o "../../bin/ytgo-${GOOS}-${GOARCH}${EXT}"
 
             - name: Upload ${{ matrix.os }}-${{ matrix.arch }} binary
               uses: actions/upload-artifact@v2
