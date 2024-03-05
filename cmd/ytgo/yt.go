@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+const VERSION string = "v2.4.0"
+
 const (
 	C_RED   string = "\x1b[31m"
 	C_GREEN string = "\x1b[32m"
@@ -17,12 +19,13 @@ const (
 func main() {
 	// specify available flags
 	var (
-		f, l, m, u bool
-		n          int
-		query      string
+		f, l, m, u, ver bool
+		n               int
+		query           string
 	)
 
 	// parse CLI args
+	flag.BoolVar(&ver, "v", false, "Display version")
 	flag.BoolVar(&f, "f", false, "Play from URL")
 	flag.BoolVar(&l, "l", false, "Select from list")
 	flag.BoolVar(&m, "m", false, "Play music only")
@@ -30,6 +33,13 @@ func main() {
 	flag.IntVar(&n, "n", 1, "Play nth media")
 	flag.Parse()
 
+	// display version
+	if ver {
+		fmt.Println(VERSION)
+		return
+	}
+
+	// get search query
 	query = strings.Join(flag.Args(), " ")
 	if query == "" {
 		flag.Usage()

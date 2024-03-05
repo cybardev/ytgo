@@ -56,12 +56,13 @@ Click to navigate.
 
 ```sh
 Usage of ytgo:
-  -f	Play from URL
-  -l	Select from list
-  -m	Play music only
+  -f    Play from URL
+  -l    Select from list
+  -m    Play music only
   -n int
-    	Play nth media (default 1)
-  -u	Display URL only
+        Play nth media (default 1)
+  -u    Display URL only
+  -v    Display version
 ```
 
 **HINT**: [Here][mpv_hotkeys]'s a list of mpv keyboard shortcuts for your convenience.
