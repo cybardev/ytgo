@@ -40,7 +40,7 @@ func getVideoFromList(app *tview.Application, vs *[]Video) (*Video, error) {
 }
 
 func getShortcut(n int) rune {
-	if n > 36 {
+	if n > 36 || n < 0 {
 		return 0
 	}
 	if n > 9 {
