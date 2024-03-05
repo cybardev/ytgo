@@ -2,13 +2,45 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
+	"regexp"
+	"strconv"
 )
 
-type YTRES string
+type VRES string // video response
+
+func (r VRES) Parse() (Video, error) {
+	re := regexp.MustCompile(`var ytInitialPlayerResponse = ({.*?});`)
+	s := re.FindStringSubmatch(string(r))[1]
+	var j interface{}
+	err := json.Unmarshal([]byte(s), &j)
+	if err != nil {
+		return Video{}, err
+	}
+	k := j.(map[string]interface{})["videoDetails"].(map[string]interface{})
+	return getVideoFromDetails(&k)
+}
+
+func getVideoFromDetails(d *map[string]interface{}) (Video, error) {
+	t, err := strconv.Atoi((*d)["lengthSeconds"].(string))
+	if err != nil {
+		t = 0
+	}
+	return Video{
+		Id:       VID((*d)["videoId"].(string)),
+		Title:    (*d)["title"].(string),
+		Channel:  (*d)["author"].(string),
+		Duration: fmt.Sprintf("%d:%d", t/60, t%60),
+	}, nil
+}
+
+type YTRES string // search response
 
 func (r YTRES) Parse() ([]Video, error) {
+	re := regexp.MustCompile(`var ytInitialData = ({.*?});`)
+	s := re.FindStringSubmatch(string(r))[1]
 	var j interface{}
-	err := json.Unmarshal([]byte(r), &j)
+	err := json.Unmarshal([]byte(s), &j)
 	if err != nil {
 		return nil, err
 	}
@@ -27,16 +59,16 @@ func getVideoList(d *[]interface{}) []Video {
 	return vids
 }
 
-func getVideoFromEntry(i *interface{}) (Video, bool) {
-	j := (*i).(map[string]interface{})["videoRenderer"]
-	if j == nil {
+func getVideoFromEntry(j *interface{}) (Video, bool) {
+	k := (*j).(map[string]interface{})["videoRenderer"]
+	if k == nil {
 		return Video{}, false // when radioRenderer, shelfRenderer, reelShelfRenderer, etc.
 	}
-	k := j.(map[string]interface{})
+	l := k.(map[string]interface{})
 	return Video{
-		Id:       VID(k["videoId"].(string)),
-		Title:    k["title"].(map[string]interface{})["runs"].([]interface{})[0].(map[string]interface{})["text"].(string),
-		Channel:  k["ownerText"].(map[string]interface{})["runs"].([]interface{})[0].(map[string]interface{})["text"].(string),
-		Duration: k["lengthText"].(map[string]interface{})["simpleText"].(string),
+		Id:       VID(l["videoId"].(string)),
+		Title:    l["title"].(map[string]interface{})["runs"].([]interface{})[0].(map[string]interface{})["text"].(string),
+		Channel:  l["ownerText"].(map[string]interface{})["runs"].([]interface{})[0].(map[string]interface{})["text"].(string),
+		Duration: l["lengthText"].(map[string]interface{})["simpleText"].(string),
 	}, true
 }

@@ -6,7 +6,7 @@ import (
 )
 
 func GetVideoFromMenu(query string) (Video, error) {
-	vids, err := GetVideos(query)
+	vids, err := GetSearchResults(query)
 	if err != nil {
 		return Video{}, err
 	}

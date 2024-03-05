@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"net/url"
 	"os"
 	"os/exec"
 )
@@ -15,14 +14,6 @@ func (v VID) URL() string {
 	return YtURL + "watch?v=" + string(v)
 }
 
-func GetVIDfromURL(s string) (VID, error) {
-	u, err := url.Parse(s)
-	if err != nil {
-		return VID(""), err
-	}
-	return VID(u.Query().Get("v")), nil
-}
-
 type Video struct {
 	Id       VID    `json:"id"`
 	Title    string `json:"title"`
@@ -31,9 +22,6 @@ type Video struct {
 }
 
 func (v Video) String() string {
-	if v.Title == "" {
-		return fmt.Sprintf("%s%s%s", C_CYAN, v.Id.URL(), C_RESET)
-	}
 	return fmt.Sprintf("%s%s %s(%s) %s[%s]%s", C_CYAN, v.Title, C_GREEN, v.Channel, C_RED, v.Duration, C_RESET)
 }
 
@@ -52,4 +40,12 @@ func (v Video) Play(m bool) error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
+}
+
+func GetVideoFromURL(u string) (Video, error) {
+	r, err := GetRequest(u)
+	if err != nil {
+		return Video{}, err
+	}
+	return VRES(r).Parse()
 }

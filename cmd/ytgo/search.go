@@ -5,11 +5,10 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"regexp"
 )
 
-func GetNthVideo(query string, n int) (Video, error) {
-	vids, err := GetVideos(query)
+func GetVideoFromSearch(query string, n int) (Video, error) {
+	vids, err := GetSearchResults(query)
 	if err != nil {
 		return Video{}, err
 	}
@@ -19,25 +18,16 @@ func GetNthVideo(query string, n int) (Video, error) {
 	return vids[n-1], nil
 }
 
-func GetVideos(query string) ([]Video, error) {
-	res, err := getSearchResults(query)
+func GetSearchResults(query string) ([]Video, error) {
+	params := url.Values{"search_query": []string{query}}.Encode()
+	r, err := GetRequest(YtURL + "results?" + params)
 	if err != nil {
 		return nil, err
 	}
-	return res.Parse()
+	return YTRES(r).Parse()
 }
 
-func getSearchResults(query string) (YTRES, error) {
-	params := url.Values{"search_query": []string{query}}.Encode()
-	s, err := getRequest(YtURL + "results?" + params)
-	if err != nil {
-		return YTRES(""), err
-	}
-	re := regexp.MustCompile(`var ytInitialData = ({.*?});`)
-	return YTRES(re.FindStringSubmatch(s)[1]), nil
-}
-
-func getRequest(u string) (string, error) {
+func GetRequest(u string) (string, error) {
 	res, err := http.Get(u)
 	if err != nil {
 		return "", err
