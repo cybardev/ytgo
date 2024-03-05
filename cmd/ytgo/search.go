@@ -12,7 +12,7 @@ func GetVideoFromURL(url string) (*Video, error) {
 	if err != nil {
 		return &Video{}, err
 	}
-	return VRES(res).Parse()
+	return VideoRes(res).Parse()
 }
 
 func GetVideoFromSearch(query string, n int) (*Video, error) {
@@ -28,11 +28,11 @@ func GetVideoFromSearch(query string, n int) (*Video, error) {
 
 func GetSearchResults(query string) (*[]Video, error) {
 	params := url.Values{"search_query": []string{query}}.Encode()
-	r, err := GetRequest(YtURL + "results?" + params)
+	res, err := GetRequest(YtURL + "results?" + params)
 	if err != nil {
 		return nil, err
 	}
-	vs, err := YTRES(r).Parse()
+	vs, err := SearchRes(res).Parse()
 	return vs, err
 }
 

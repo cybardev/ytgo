@@ -7,9 +7,9 @@ import (
 	"strconv"
 )
 
-type VRES string // video response
+type VideoRes string // Video Response
 
-func (r VRES) Parse() (*Video, error) {
+func (r VideoRes) Parse() (*Video, error) {
 	re := regexp.MustCompile(`var ytInitialPlayerResponse = ({.*?});`)
 	s := re.FindStringSubmatch(string(r))[1]
 	var j interface{}
@@ -34,9 +34,9 @@ func getVideoFromDetails(j *map[string]interface{}) (*Video, error) {
 	}, nil
 }
 
-type YTRES string // search response
+type SearchRes string // Search Response
 
-func (r YTRES) Parse() (*[]Video, error) {
+func (r SearchRes) Parse() (*[]Video, error) {
 	re := regexp.MustCompile(`var ytInitialData = ({.*?});`)
 	s := re.FindStringSubmatch(string(r))[1]
 	var j interface{}
