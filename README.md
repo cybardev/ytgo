@@ -4,8 +4,6 @@
 
 **PS**: this is a `Python -> Go` translation of [cybardev/ytpy][ytpy] which itself was a `Shell -> Python` translation of [pystardust/ytfzf][ytfzf] _(before I rewrote it from scratch)_
 
-> **WARNING**: Windows is likely to not run. I'm assuming because of how `mpv` is executed by the program. Feel free to fork and make a PR if you would like to fix this. Meanwhile, WSL may be used to run the Linux binaries.
-
 ### Table of Contents
 
 Click to navigate.
@@ -36,7 +34,7 @@ Click to navigate.
 
 #### With Go
 
-> **PS**: the pkg.go.dev registry may have an outdated version. If you encounter bugs or feature disparity, please try the [Manual installation](#manual) method for the latest updates
+> **PS**: the pkg.go.dev registry may have an outdated version. If you encounter bugs or feature disparity, please replace `main` after `@` with the first part of the commit hash, e.g. `github.com/cybardev/ytgo/cmd/ytgo@e819a79`, **OR** try the [Manual installation](#manual) method for the latest updates.
 
 -   Run the following command:
 
