@@ -44,7 +44,7 @@ jobs:
               with:
                   name: ytgo-${{ matrix.os }}-${{ matrix.arch }}
                   path: |
-                      bin/ytgo-${{ matrix.os }}-${{ matrix.arch }}
+                      bin/ytgo-${{ matrix.os }}-${{ matrix.arch }}*
 
     release:
         needs: build
