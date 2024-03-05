@@ -41,7 +41,7 @@ Click to navigate.
 -   Run the following command:
 
     ```sh
-    go install github.com/cybardev/ytgo/cmd/ytgo@latest
+    go install github.com/cybardev/ytgo/cmd/ytgo@main
     ```
 
 -   Ensure `$GOPATH/bin` is added to `$PATH`. An easy way is to add this line to `~/.profile`:
