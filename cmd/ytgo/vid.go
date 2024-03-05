@@ -41,11 +41,3 @@ func (v Video) Play(m bool) error {
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
 }
-
-func GetVideoFromURL(u string) (Video, error) {
-	r, err := GetRequest(u)
-	if err != nil {
-		return Video{}, err
-	}
-	return VRES(r).Parse()
-}

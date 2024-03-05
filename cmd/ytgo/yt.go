@@ -38,13 +38,13 @@ func main() {
 	}
 
 	// play media from YT or display URL
-	var v Video
+	var v *Video
 	var err error
 	if f {
 		v, err = GetVideoFromURL(query)
 	} else if l {
 		v, err = GetVideoFromMenu(query)
-		if err == nil && (v == Video{}) {
+		if (err == nil && *v == Video{}) {
 			return
 		}
 	} else {
