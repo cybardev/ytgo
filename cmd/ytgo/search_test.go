@@ -11,7 +11,31 @@ func TestGetRequest(t *testing.T) {}
 
 func TestGetSearchResults(t *testing.T) {}
 
-func TestGetVideoFromSearch(t *testing.T) {}
+func TestGetVideoFromSearch(t *testing.T) {
+	qs := []string{
+		"rickroll",
+		"gurenge cover",
+		"hotaru maiko fujita",
+		"one last kiss utada",
+		"face my fears utada",
+	}
+
+	var wg sync.WaitGroup
+	wg.Add(len(qs))
+
+	for i, q := range qs {
+		go func(s string, t *testing.T, wg *sync.WaitGroup) {
+			defer wg.Done()
+			v, err := GetVideoFromSearch(s, i+1)
+			if err != nil {
+				t.Error(err)
+			}
+			testGottenVideo(v, t)
+		}(q, t, &wg)
+	}
+
+	wg.Wait()
+}
 
 func TestGetVideoFromURL(t *testing.T) {
 	vs := []VID{
