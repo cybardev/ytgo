@@ -14,7 +14,7 @@ func TestGetSearchResults(t *testing.T) {}
 func TestGetVideoFromSearch(t *testing.T) {}
 
 func TestGetVideoFromURL(t *testing.T) {
-	us := []VID{
+	vs := []VID{
 		"dQw4w9WgXcQ",
 		"kVqUuYKH77o",
 		"0Uhh62MUEic",
@@ -23,9 +23,9 @@ func TestGetVideoFromURL(t *testing.T) {
 	}
 
 	var wg sync.WaitGroup
-	wg.Add(len(us))
+	wg.Add(len(vs))
 
-	for _, u := range us {
+	for _, u := range vs {
 		go testGetVideoFromURL(u.URL(), t, &wg)
 	}
 
