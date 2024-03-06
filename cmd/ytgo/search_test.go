@@ -13,6 +13,7 @@ var vs []VID = []VID{
 	"0Uhh62MUEic",
 	"XtK50cbCAdk",
 	"KqRl5OAFYCQ",
+	"xm3YgoEiEDc",
 }
 
 var qs []string = []string{
@@ -21,6 +22,7 @@ var qs []string = []string{
 	"hotaru maiko fujita",
 	"one last kiss utada",
 	"face my fears utada",
+	"rickroll 10h",
 }
 
 func TestGetRequest(t *testing.T) {
