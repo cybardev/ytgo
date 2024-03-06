@@ -74,7 +74,7 @@ func testGottenVideo(v *Video, t *testing.T) {
 	if v.Channel == "" {
 		t.Error("Channel is empty")
 	}
-	re = regexp.MustCompile(`^\d+:\d+$`)
+	re = regexp.MustCompile(`^(\d+:)?\d+:\d+$`)
 	if re.MatchString(v.Duration) == false {
 		t.Error("Duration does not match pattern:", v.Duration)
 	}
