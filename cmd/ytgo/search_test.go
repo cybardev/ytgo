@@ -26,20 +26,20 @@ func TestGetVideoFromURL(t *testing.T) {
 	wg.Add(len(vs))
 
 	for _, u := range vs {
-		go testGetVideoFromURL(u.URL(), t, &wg)
+		go func(u string, t *testing.T, wg *sync.WaitGroup) {
+			defer wg.Done()
+			v, err := GetVideoFromURL(u)
+			if err != nil {
+				t.Error(err)
+			}
+			testGottenVideo(v, t)
+		}(u.URL(), t, &wg)
 	}
 
 	wg.Wait()
 }
 
-func testGetVideoFromURL(u string, t *testing.T, wg *sync.WaitGroup) {
-	defer wg.Done()
-
-	v, err := GetVideoFromURL(u)
-	if err != nil {
-		t.Error(err)
-	}
-
+func testGottenVideo(v *Video, t *testing.T) {
 	re := regexp.MustCompile(`^.{11}$`)
 	if re.MatchString(string(v.Id)) == false {
 		t.Error("Id does not match pattern:", v.Id)
