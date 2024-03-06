@@ -52,6 +52,24 @@ func TestGetRequest(t *testing.T) {
 	wg.Wait()
 }
 
+func TestGetVideoFromURL(t *testing.T) {
+	var wg sync.WaitGroup
+	wg.Add(len(vs))
+
+	for _, u := range vs {
+		go func(u string, t *testing.T, wg *sync.WaitGroup) {
+			defer wg.Done()
+			v, err := GetVideoFromURL(u)
+			if err != nil {
+				t.Error(err)
+			}
+			testGottenVideo(v, t)
+		}(u.URL(), t, &wg)
+	}
+
+	wg.Wait()
+}
+
 func TestGetSearchResults(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(len(qs))
@@ -85,24 +103,6 @@ func TestGetVideoFromSearch(t *testing.T) {
 			}
 			testGottenVideo(v, t)
 		}(q, t, &wg)
-	}
-
-	wg.Wait()
-}
-
-func TestGetVideoFromURL(t *testing.T) {
-	var wg sync.WaitGroup
-	wg.Add(len(vs))
-
-	for _, u := range vs {
-		go func(u string, t *testing.T, wg *sync.WaitGroup) {
-			defer wg.Done()
-			v, err := GetVideoFromURL(u)
-			if err != nil {
-				t.Error(err)
-			}
-			testGottenVideo(v, t)
-		}(u.URL(), t, &wg)
 	}
 
 	wg.Wait()
