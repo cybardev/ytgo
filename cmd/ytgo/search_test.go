@@ -25,6 +25,13 @@ var qs []string = []string{
 	"rickroll 10h",
 }
 
+func TestVersion(t *testing.T) {
+	re := regexp.MustCompile(`^v\d+\.\d+\.\d+$`)
+	if !re.MatchString(VERSION) {
+		t.Error("VERSION does not match vMAJOR.MINOR.PATCH format:", VERSION)
+	}
+}
+
 func TestGetRequest(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(len(vs))
@@ -125,5 +132,23 @@ func testGottenVideo(v *Video, t *testing.T) {
 	re = regexp.MustCompile(`^https://www\.youtube\.com/watch\?v=.{11}$`)
 	if re.MatchString(v.Id.URL()) == false {
 		t.Error("URL does not match pattern:", v.Id.URL())
+	}
+}
+
+func TestGetShortcut(t *testing.T) {
+	var ctrlMap map[int]rune = map[int]rune{
+		0:  rune(48),
+		1:  rune(48 + 1),
+		9:  rune(48 + 9),
+		10: rune(87 + 10),
+		36: rune(87 + 36),
+		37: 0,
+		-1: 0,
+	}
+	for i, r := range ctrlMap {
+		symbol := getShortcut(i)
+		if symbol != r {
+			t.Errorf("Expected shortcut to be %d, got %d", r, symbol)
+		}
 	}
 }
