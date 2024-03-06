@@ -7,18 +7,21 @@ import (
 	"testing"
 )
 
-func TestGetRequest(t *testing.T) {}
+var vs []VID = []VID{
+	"dQw4w9WgXcQ",
+	"kVqUuYKH77o",
+	"0Uhh62MUEic",
+	"XtK50cbCAdk",
+	"KqRl5OAFYCQ",
+}
 
-func TestGetSearchResults(t *testing.T) {}
-
-func TestGetVideoFromSearch(t *testing.T) {
-	qs := []string{
-		"rickroll",
-		"gurenge cover",
-		"hotaru maiko fujita",
-		"one last kiss utada",
-		"face my fears utada",
-	}
+var qs []string = []string{
+	"rickroll",
+	"gurenge cover",
+	"hotaru maiko fujita",
+	"one last kiss utada",
+	"face my fears utada",
+}
 
 	var wg sync.WaitGroup
 	wg.Add(len(qs))
@@ -38,14 +41,6 @@ func TestGetVideoFromSearch(t *testing.T) {
 }
 
 func TestGetVideoFromURL(t *testing.T) {
-	vs := []VID{
-		"dQw4w9WgXcQ",
-		"kVqUuYKH77o",
-		"0Uhh62MUEic",
-		"XtK50cbCAdk",
-		"KqRl5OAFYCQ",
-	}
-
 	var wg sync.WaitGroup
 	wg.Add(len(vs))
 
