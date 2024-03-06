@@ -15,7 +15,7 @@ func (r VideoRes) Parse() (*Video, error) {
 	var j interface{}
 	err := json.Unmarshal([]byte(s), &j)
 	if err != nil {
-		return &Video{}, err
+		return nil, err
 	}
 	k := j.(map[string]interface{})["videoDetails"].(map[string]interface{})
 	return getVideoFromDetails(&k)
@@ -69,7 +69,7 @@ func getVideoList(j *[]interface{}) *[]Video {
 func getVideoFromEntry(j *interface{}) (*Video, bool) {
 	k := (*j).(map[string]interface{})["videoRenderer"]
 	if k == nil {
-		return &Video{}, false // when radioRenderer, shelfRenderer, reelShelfRenderer, etc.
+		return nil, false // when radioRenderer, shelfRenderer, reelShelfRenderer, etc.
 	}
 	l := k.(map[string]interface{})
 	return &Video{

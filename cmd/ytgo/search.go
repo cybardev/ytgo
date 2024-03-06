@@ -10,7 +10,7 @@ import (
 func GetVideoFromURL(url string) (*Video, error) {
 	res, err := GetRequest(url)
 	if err != nil {
-		return &Video{}, err
+		return nil, err
 	}
 	return VideoRes(res).Parse()
 }
@@ -18,10 +18,10 @@ func GetVideoFromURL(url string) (*Video, error) {
 func GetVideoFromSearch(query string, n int) (*Video, error) {
 	vs, err := GetSearchResults(query)
 	if err != nil {
-		return &Video{}, err
+		return nil, err
 	}
 	if n <= 0 || n > len(*vs) {
-		return &Video{}, errors.New("no video found")
+		return nil, errors.New("no video found")
 	}
 	return &(*vs)[n-1], nil
 }
