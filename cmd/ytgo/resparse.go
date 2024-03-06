@@ -26,11 +26,18 @@ func getVideoFromDetails(j *map[string]interface{}) (*Video, error) {
 	if err != nil {
 		t = 0
 	}
+	hh, mm, ss := t/3600, (t%3600)/60, t%60
+	var tf string
+	if hh > 0 {
+		tf = fmt.Sprintf("%d:%02d:%02d", hh, mm, ss)
+	} else {
+		tf = fmt.Sprintf("%d:%02d", mm, ss)
+	}
 	return &Video{
 		Id:       VID((*j)["videoId"].(string)),
 		Title:    (*j)["title"].(string),
 		Channel:  (*j)["author"].(string),
-		Duration: fmt.Sprintf("%d:%d", t/60, t%60),
+		Duration: tf,
 	}, nil
 }
 
