@@ -23,6 +23,29 @@ var qs []string = []string{
 	"face my fears utada",
 }
 
+func TestGetRequest(t *testing.T) {}
+
+func TestGetSearchResults(t *testing.T) {
+	var wg sync.WaitGroup
+	wg.Add(len(qs))
+
+	for _, q := range qs {
+		go func(s string, t *testing.T, wg *sync.WaitGroup) {
+			defer wg.Done()
+			v, err := GetSearchResults(s)
+			if err != nil {
+				t.Error(err)
+			}
+			for _, v := range *v {
+				testGottenVideo(&v, t)
+			}
+		}(q, t, &wg)
+	}
+
+	wg.Wait()
+}
+
+func TestGetVideoFromSearch(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(len(qs))
 
