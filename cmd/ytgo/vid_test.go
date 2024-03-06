@@ -5,6 +5,15 @@ import (
 	"testing"
 )
 
+type ctrlVideo struct {
+	Id       VID
+	Title    string
+	Channel  string
+	Duration string
+	Desc     string
+	String   string
+}
+
 func TestVID(t *testing.T) {
 	var ctrlStr string = "ABCDEFG_V1"
 	var ctrlUrl string = "https://www.youtube.com/watch?v=ABCDEFG_V1"
@@ -20,14 +29,6 @@ func TestVID(t *testing.T) {
 }
 
 func TestVideo(t *testing.T) {
-	type ctrlVideo struct {
-		Id       VID
-		Title    string
-		Channel  string
-		Duration string
-		Desc     string
-		String   string
-	}
 	ctrl := ctrlVideo{
 		Id:       VID("ABCDEFG_V2"),
 		Title:    "Test",
