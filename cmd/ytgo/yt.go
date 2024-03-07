@@ -54,7 +54,7 @@ func main() {
 		v, err = GetVideoFromURL(query)
 	} else if l {
 		v, err = GetVideoFromMenu(query)
-		if (err == nil && *v == Video{}) {
+		if err == nil && v == nil {
 			return
 		}
 	} else {
