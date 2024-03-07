@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-const VERSION string = "v2.5.1"
+const VERSION string = "v3.0.0"
 
 const (
 	C_RED   string = "\x1b[31m"
@@ -19,17 +19,17 @@ const (
 func main() {
 	// specify available flags
 	var (
-		f, l, m, u, ver bool
+		d, i, m, u, ver bool
 		n               int
 		query           string
 	)
 
 	// parse CLI args
 	flag.BoolVar(&ver, "v", false, "Display version")
-	flag.BoolVar(&f, "f", false, "Play from URL")
-	flag.BoolVar(&l, "l", false, "Select from list")
+	flag.BoolVar(&d, "d", false, "Display URL only")
+	flag.BoolVar(&i, "i", false, "Interactive selection")
 	flag.BoolVar(&m, "m", false, "Play music only")
-	flag.BoolVar(&u, "u", false, "Display URL only")
+	flag.BoolVar(&u, "u", false, "Play from URL")
 	flag.IntVar(&n, "n", 1, "Play nth media")
 	flag.Parse()
 
@@ -50,9 +50,9 @@ func main() {
 	// play media from YT or display URL
 	var v *Video
 	var err error
-	if f {
+	if u {
 		v, err = GetVideoFromURL(query)
-	} else if l {
+	} else if i {
 		v, err = GetVideoFromMenu(query)
 		if err == nil && v == nil {
 			return
@@ -63,7 +63,7 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	if u {
+	if d {
 		fmt.Println(v.Id.URL())
 		return
 	}
