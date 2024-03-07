@@ -52,8 +52,6 @@ Click to navigate.
 
 ### Usage
 
-**PS**: For simplicity, I will refer to the binary as `ytgo`.
-
 Output of `ytgo -h`:
 
 ```sh
