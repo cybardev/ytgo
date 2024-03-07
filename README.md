@@ -34,12 +34,12 @@ Click to navigate.
 
 #### With Go
 
-> **PS**: the pkg.go.dev registry may have an outdated version. If you encounter bugs or feature disparity, please replace `main` after `@` with the first part of the commit hash, e.g. `github.com/cybardev/ytgo/cmd/ytgo@e819a79`, **OR** try the [Manual installation](#manual) method for the latest updates.
+> **Link to package**: [pkg.go.dev/github.com/cybardev/ytgo/v3][gopkg]
 
 -   Run the following command:
 
     ```sh
-    go install github.com/cybardev/ytgo/cmd/ytgo@main
+    go install github.com/cybardev/ytgo/v3/cmd/ytgo@latest
     ```
 
 -   Ensure `$GOPATH/bin` is added to `$PATH`. An easy way is to add this line to `~/.profile`:
@@ -48,9 +48,13 @@ Click to navigate.
     export PATH="$(go env GOPATH)/bin:$PATH"
     ```
 
+> **PS**: the [pkg.go.dev][gopkg] registry may have an outdated version. If you encounter bugs or feature disparity, please replace `latest` after `@` with `main`, e.g. `github.com/cybardev/ytgo/v3/cmd/ytgo@main`, **OR** try the [Manual installation](#manual) method for the latest updates.
+
 ### Usage
 
 **PS**: For simplicity, I will refer to the binary as `ytgo`.
+
+Output of `ytgo -h`:
 
 ```sh
 Usage of ytgo:
@@ -102,6 +106,7 @@ Usage of ytgo:
 <!-- Links -->
 
 [ytpy]: https://github.com/cybardev/ytpy
+[gopkg]: https://pkg.go.dev/github.com/cybardev/ytgo/v3
 [release]: https://github.com/cybardev/ytgo/releases/tag/latest
 [mpv]: https://github.com/mpv-player/mpv
 [ytdl]: https://github.com/yt-dlp/yt-dlp
