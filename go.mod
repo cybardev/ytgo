@@ -1,4 +1,4 @@
-module github.com/cybardev/ytgo
+module github.com/cybardev/ytgo/v3
 
 go 1.22
 
