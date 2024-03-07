@@ -54,13 +54,13 @@ Click to navigate.
 
 ```sh
 Usage of ytgo:
-  -f    Play from URL
-  -l    Select from list
-  -m    Play music only
+  -d	Display URL only
+  -i	Interactive selection
+  -m	Play music only
   -n int
-        Play nth media (default 1)
-  -u    Display URL only
-  -v    Display version
+    	Play nth media (default 1)
+  -u	Play from URL
+  -v	Display version
 ```
 
 **HINT**: [Here][mpv_hotkeys]'s a list of mpv keyboard shortcuts for your convenience.
@@ -81,17 +81,17 @@ Usage of ytgo:
 
 -   Play an audio from URL:
 
-    `ytgo -f -m "https://www.youtube.com/watch?v=y6120QOlsfU"`
+    `ytgo -u -m "https://www.youtube.com/watch?v=y6120QOlsfU"`
 
     -   **PS**: The URL must be quoted to avoid parsing by the shell
 
 -   Find the URL of a video:
 
-    `ytgo -u hotaru maiko fujita`
+    `ytgo -d hotaru maiko fujita`
 
 -   Interactive selection mode:
 
-    `ytgo -l marmot scream meme`
+    `ytgo -i marmot scream meme`
 
 ### Credits
 
