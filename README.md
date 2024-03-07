@@ -45,7 +45,7 @@ Click to navigate.
 -   Ensure `$GOPATH/bin` is added to `$PATH`. An easy way is to add this line to `~/.profile`:
 
     ```sh
-    export PATH="$(go env GOPATH):$PATH"
+    export PATH="$(go env GOPATH)/bin:$PATH"
     ```
 
 ### Usage
