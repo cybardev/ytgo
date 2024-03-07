@@ -1,0 +1,22 @@
+# Manually trigger a refresh of pkg.go.dev by installing from latest commit
+
+name: Refresh package on pkg.go.dev
+
+on:
+    schedule:
+        - cron: "0 0 * * 5"
+
+jobs:
+    refresh-package:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Set up Go
+              uses: actions/setup-go@v4
+              with:
+                  go-version: "1.22"
+
+            - name: Refresh package
+              run: go install github.com/cybardev/ytgo/cmd/ytgo@${{ github.sha }}
