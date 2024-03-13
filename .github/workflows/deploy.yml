@@ -1,0 +1,27 @@
+# This workflow will build a golang project and create a release with generated binaries
+
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: CI/CD (stable)
+
+on:
+    push:
+        tags: ["v*"]
+
+# Sets permissions of the GITHUB_TOKEN to allow releases
+permissions:
+    contents: write
+
+jobs:
+    test:
+        uses: ./.github/workflows/test.yml
+
+    build:
+        needs: test
+        uses: ./.github/workflows/build.yml
+
+    release:
+        needs: build
+        uses: ./.github/workflows/release.yml
+        with:
+            tagged: true
