@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-const VERSION string = "v3.0.7"
+const VERSION string = "v3.0.8"
 
 const (
 	C_RED   string = "\x1b[31m"
