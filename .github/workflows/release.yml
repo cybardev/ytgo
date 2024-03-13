@@ -86,3 +86,11 @@ jobs:
                   prerelease: false
                   files: |
                       bin/ytgo-*/ytgo-*
+            - name: Create Release with latest tag
+              uses: "marvinpinto/action-automatic-releases@latest"
+              with:
+                  automatic_release_tag: latest
+                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                  prerelease: false
+                  files: |
+                      bin/ytgo-*/ytgo-*
