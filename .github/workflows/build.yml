@@ -1,0 +1,36 @@
+name: Build
+
+on:
+    # Allows running this workflow from other workflows
+    workflow_call:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                os: [linux, darwin, windows]
+                arch: [amd64, arm64]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Set up Go
+              uses: actions/setup-go@v4
+              with:
+                  go-version: "1.22"
+
+            - name: Build for ${{ matrix.os }} (${{ matrix.arch }})
+              env:
+                  GOOS: ${{ matrix.os }}
+                  GOARCH: ${{ matrix.arch }}
+              run: |
+                  [ "$GOOS" = "windows" ] && EXT=".exe" || EXT=""
+                  go build -C cmd/ytgo -o "../../bin/ytgo-${GOOS}-${GOARCH}${EXT}"
+
+            - name: Upload ${{ matrix.os }}-${{ matrix.arch }} binary
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ytgo-${{ matrix.os }}-${{ matrix.arch }}
+                  path: |
+                      bin/ytgo-${{ matrix.os }}-${{ matrix.arch }}*

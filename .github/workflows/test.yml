@@ -1,0 +1,29 @@
+name: Run Tests
+
+on:
+    # Allows running this workflow from other workflows
+    workflow_call:
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Set up Go
+              uses: actions/setup-go@v4
+              with:
+                  go-version: "1.22"
+
+            - name: Test build
+              run: go build -C cmd/ytgo -o "../../bin/ytgo"
+
+            - name: Run tests
+              run: go test -v -coverprofile=coverage.out ./cmd/ytgo
+
+            - name: Report Coverage
+              uses: shogo82148/actions-goveralls@v1
+              with:
+                  github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
+                  path-to-profile: coverage.out

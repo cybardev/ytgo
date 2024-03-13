@@ -1,0 +1,41 @@
+# This workflow will build a golang project and create a release with generated binaries
+
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: CI/CD (latest)
+
+on:
+    push:
+        branches: ["main"]
+
+    # Allows running this workflow from other workflows
+    workflow_call:
+
+    # Allows running this workflow from GitHub Actions tab
+    workflow_dispatch:
+
+jobs:
+    test:
+        uses: ./.github/workflows/test.yml
+
+    build:
+        needs: test
+        uses: ./.github/workflows/build.yml
+
+    release:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Download binaries
+              uses: actions/download-artifact@v2
+              with:
+                  path: |
+                      bin/
+            - name: Create Release with latest tag
+              uses: "marvinpinto/action-automatic-releases@latest"
+              with:
+                  automatic_release_tag: latest
+                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                  prerelease: false
+                  files: |
+                      bin/ytgo-*/ytgo-*
