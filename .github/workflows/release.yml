@@ -36,6 +36,7 @@ jobs:
             - name: Report Coverage
               uses: shogo82148/actions-goveralls@v1
               with:
+                  github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
                   path-to-profile: coverage.out
 
     build:
