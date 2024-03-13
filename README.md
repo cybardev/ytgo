@@ -4,6 +4,11 @@
 
 **PS**: this is a `Python -> Go` translation of [cybardev/ytpy][ytpy] which itself was a `Shell -> Python` translation of [pystardust/ytfzf][ytfzf] _(before I rewrote it from scratch)_
 
+[![Go Reference][reference_badge]][reference_link]
+[![Go Report Card][go_report_badge]][go_report_link]
+[![Test Coverage][coveralls_badge]][coveralls_link]
+[![Workflow Status][workflows_badge]][workflows_link]
+
 ### Table of Contents
 
 Click to navigate.
@@ -114,3 +119,11 @@ Usage of ytgo:
 [ytfzf]: https://github.com/pystardust/ytfzf
 [article]: https://www.codeproject.com/articles/873060/python-search-youtube-for-video
 [regex]: https://stackoverflow.com/a/68262735
+[reference_link]: https://pkg.go.dev/github.com/cybardev/ytgo/v3/cmd/ytgo
+[go_report_link]: https://goreportcard.com/report/github.com/cybardev/ytgo/v3
+[coveralls_link]: https://coveralls.io/github/cybardev/ytgo
+[workflows_link]: https://github.com/cybardev/ytgo/actions/workflows/release.yml
+[reference_badge]: https://pkg.go.dev/badge/github.com/cybardev/ytgo/v3/cmd/ytgo.svg
+[go_report_badge]: https://goreportcard.com/badge/github.com/cybardev/ytgo/v3?style=flat-square
+[coveralls_badge]: https://img.shields.io/coveralls/github/cybardev/ytgo?style=flat-square
+[workflows_badge]: https://github.com/cybardev/ytgo/actions/workflows/release.yml/badge.svg?style=flat-square
