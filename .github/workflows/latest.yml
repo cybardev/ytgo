@@ -28,18 +28,4 @@ jobs:
 
     release:
         needs: build
-        runs-on: ubuntu-latest
-        steps:
-            - name: Download binaries
-              uses: actions/download-artifact@v2
-              with:
-                  path: |
-                      bin/
-            - name: Create Release with latest tag
-              uses: "marvinpinto/action-automatic-releases@latest"
-              with:
-                  automatic_release_tag: latest
-                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
-                  prerelease: false
-                  files: |
-                      bin/ytgo-*/ytgo-*
+        uses: ./.github/workflows/release.yml

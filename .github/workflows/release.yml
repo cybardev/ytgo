@@ -1,77 +1,16 @@
-# This workflow will build a golang project and create a release with generated binaries
-
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
-
-name: CI/CD
+name: Release
 
 on:
-    push:
-        tags: ["v*"]
-
-    # Allows running this workflow from GitHub Actions tab
-    workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow releases
-permissions:
-    contents: write
+    # Allows running this workflow from other workflows
+    workflow_call:
+        inputs:
+            tagged:
+                default: false
+                required: false
+                type: boolean
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
-
-            - name: Set up Go
-              uses: actions/setup-go@v4
-              with:
-                  go-version: "1.22"
-
-            - name: Test build
-              run: go build -C cmd/ytgo -o "../../bin/ytgo"
-
-            - name: Run tests
-              run: go test -v -coverprofile=coverage.out ./cmd/ytgo
-
-            - name: Report Coverage
-              uses: shogo82148/actions-goveralls@v1
-              with:
-                  github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
-                  path-to-profile: coverage.out
-
-    build:
-        needs: test
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                os: [linux, darwin, windows]
-                arch: [amd64, arm64]
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
-
-            - name: Set up Go
-              uses: actions/setup-go@v4
-              with:
-                  go-version: "1.22"
-
-            - name: Build for ${{ matrix.os }} (${{ matrix.arch }})
-              env:
-                  GOOS: ${{ matrix.os }}
-                  GOARCH: ${{ matrix.arch }}
-              run: |
-                  [ "$GOOS" = "windows" ] && EXT=".exe" || EXT=""
-                  go build -C cmd/ytgo -o "../../bin/ytgo-${GOOS}-${GOARCH}${EXT}"
-
-            - name: Upload ${{ matrix.os }}-${{ matrix.arch }} binary
-              uses: actions/upload-artifact@v2
-              with:
-                  name: ytgo-${{ matrix.os }}-${{ matrix.arch }}
-                  path: |
-                      bin/ytgo-${{ matrix.os }}-${{ matrix.arch }}*
-
     release:
-        needs: build
         runs-on: ubuntu-latest
         steps:
             - name: Download binaries
@@ -79,7 +18,8 @@ jobs:
               with:
                   path: |
                       bin/
-            - name: Create Release
+            - name: Create Release with pushed tag
+              if: ${{ inputs.tagged }}
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -87,6 +27,7 @@ jobs:
                   files: |
                       bin/ytgo-*/ytgo-*
             - name: Create Release with latest tag
+              if: ${{ ! inputs.tagged }}
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   automatic_release_tag: latest
