@@ -19,4 +19,4 @@ jobs:
                   go-version: "1.22"
 
             - name: Refresh package
-              run: go install github.com/cybardev/ytgo/cmd/ytgo@${{ github.sha }}
+              run: go install github.com/cybardev/ytgo/v3/cmd/ytgo@${{ github.sha }}
