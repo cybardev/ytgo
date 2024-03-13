@@ -126,4 +126,4 @@ Usage of ytgo:
 [reference_badge]: https://pkg.go.dev/badge/github.com/cybardev/ytgo/v3/cmd/ytgo.svg
 [go_report_badge]: https://goreportcard.com/badge/github.com/cybardev/ytgo/v3?style=flat-square
 [coveralls_badge]: https://img.shields.io/coveralls/github/cybardev/ytgo?style=flat-square
-[workflows_badge]: https://img.shields.io/github/actions/workflow/status/cybardev/ytgo/release.yml?style=flat-square&branch=v3.0.7
+[workflows_badge]: https://img.shields.io/github/actions/workflow/status/cybardev/ytgo/release.yml?style=flat-square&branch=latest
