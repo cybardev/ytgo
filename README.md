@@ -122,8 +122,8 @@ Usage of ytgo:
 [reference_link]: https://pkg.go.dev/github.com/cybardev/ytgo/v3/cmd/ytgo
 [go_report_link]: https://goreportcard.com/report/github.com/cybardev/ytgo/v3
 [coveralls_link]: https://coveralls.io/github/cybardev/ytgo
-[workflows_link]: https://github.com/cybardev/ytgo/actions/workflows/release.yml
+[workflows_link]: https://github.com/cybardev/ytgo/actions/workflows/latest.yml
 [reference_badge]: https://pkg.go.dev/badge/github.com/cybardev/ytgo/v3/cmd/ytgo.svg
 [go_report_badge]: https://goreportcard.com/badge/github.com/cybardev/ytgo/v3?style=flat-square
 [coveralls_badge]: https://img.shields.io/coveralls/github/cybardev/ytgo?style=flat-square
-[workflows_badge]: https://img.shields.io/github/actions/workflow/status/cybardev/ytgo/release.yml?style=flat-square&branch=latest
+[workflows_badge]: https://img.shields.io/github/actions/workflow/status/cybardev/ytgo/latest.yml?style=flat-square
