@@ -2,7 +2,8 @@
 
 ## A Go program to play media from YouTube without needing API keys
 
-**PS**: this is a `Python -> Go` translation of [cybardev/ytpy][ytpy] which itself was a `Shell -> Python` translation of [pystardust/ytfzf][ytfzf] _(before I rewrote it from scratch)_
+> [!NOTE]
+> This is a `Python -> Go` translation of [cybardev/ytpy][ytpy] which itself was a `Shell -> Python` translation of [pystardust/ytfzf][ytfzf] _(before I rewrote it from scratch)_
 
 [![Go Reference][reference_badge]][reference_link]
 [![Go Report Card][go_report_badge]][go_report_link]
@@ -53,7 +54,8 @@ Click to navigate.
     export PATH="$(go env GOPATH)/bin:$PATH"
     ```
 
-> **PS**: the [pkg.go.dev][gopkg] registry may have an outdated version. If you encounter bugs or feature disparity, please replace `latest` after `@` with `main`, e.g. `github.com/cybardev/ytgo/v3/cmd/ytgo@main`, **OR** try the [Manual installation](#manual) method for the latest updates.
+> [!IMPORTANT]
+> The [pkg.go.dev][gopkg] registry may have an outdated version. If you encounter bugs or feature disparity, please replace `latest` after `@` with `main`, e.g. `github.com/cybardev/ytgo/v3/cmd/ytgo@main`, **OR** try the [Manual installation](#manual) method for the latest updates.
 
 ### Usage
 
