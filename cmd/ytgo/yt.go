@@ -54,14 +54,13 @@ func main() {
 		v, err = GetVideoFromURL(query)
 	} else if i {
 		v, err = GetVideoFromMenu(query)
-		if err == nil && v == nil {
-			return
-		}
 	} else {
 		v, err = GetVideoFromSearch(query, n)
 	}
 	if err != nil {
 		log.Fatalln(err)
+	} else if v == nil {
+	    return
 	}
 	if d {
 		fmt.Println(v.Id.URL())
