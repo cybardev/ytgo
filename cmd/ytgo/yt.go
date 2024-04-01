@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-const VERSION string = "v3.0.12"
+const VERSION string = "v3.0.13"
 
 const (
 	C_RED   string = "\x1b[31m"
@@ -60,13 +60,12 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	} else if v == nil {
-	    return
-	}
-	if d {
-		fmt.Println(v.Id.URL())
 		return
+	} else if d {
+		fmt.Println(v.Id.URL())
+	} else {
+		err = v.Play(m)
 	}
-	err = v.Play(m)
 	if err != nil {
 		log.Fatalln(err)
 	}
