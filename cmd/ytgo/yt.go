@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"log"
+	"os"
+	"os/signal"
 	"strings"
 )
 
@@ -19,9 +22,9 @@ const (
 func main() {
 	// specify available flags
 	var (
-		d, i, m, u, ver bool
-		n               int
-		query           string
+		d, i, m, p, u, ver bool
+		n                  int
+		query              string
 	)
 
 	// parse CLI args
@@ -29,6 +32,7 @@ func main() {
 	flag.BoolVar(&d, "d", false, "Display URL only")
 	flag.BoolVar(&i, "i", false, "Interactive selection")
 	flag.BoolVar(&m, "m", false, "Play music only")
+	flag.BoolVar(&p, "p", false, "Prompt mode")
 	flag.BoolVar(&u, "u", false, "Play from URL")
 	flag.IntVar(&n, "n", 1, "Play nth media")
 	flag.Parse()
@@ -39,17 +43,41 @@ func main() {
 		return
 	}
 
+	var v *Video
+	var err error
+	reader := bufio.NewReader(os.Stdin)
+
+	// handle SIGINT (^C) in prompt mode
+	if p {
+		go func() {
+			sigchan := make(chan os.Signal, 1)
+			signal.Notify(sigchan, os.Interrupt)
+			<-sigchan
+			fmt.Printf("\n%sExiting...%s\n", C_CYAN, C_RESET)
+			os.Exit(0)
+		}()
+	}
+
 	// get search query
-	query = strings.Join(flag.Args(), " ")
+	if p {
+		query = getQuery(reader)
+	} else {
+		query = strings.Join(flag.Args(), " ")
+	}
+
+loop:
 	if query == "" {
-		flag.Usage()
-		fmt.Println()
-		log.Fatalln("no query provided")
+		if p {
+			fmt.Println("No search query provided.")
+			goto endloop
+		} else {
+			flag.Usage()
+			fmt.Println()
+			log.Fatalln("no query provided")
+		}
 	}
 
 	// play media from YT or display URL
-	var v *Video
-	var err error
 	if u {
 		v, err = GetVideoFromURL(query)
 	} else if i {
@@ -69,4 +97,20 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+endloop:
+	if p {
+		query = getQuery(reader)
+		goto loop
+	}
+}
+
+func getQuery(r *bufio.Reader) string {
+	fmt.Printf("%sEnter search query:%s ", C_CYAN, C_RESET)
+	q, err := r.ReadString('\n')
+	if err != nil {
+		log.Fatalln(err)
+	}
+	q = strings.TrimSpace(q)
+	return q
 }
