@@ -45,7 +45,7 @@ func main() {
 
 	var v *Video
 	var err error
-	reader := bufio.NewReader(os.Stdin)
+	scanner := bufio.NewScanner(os.Stdin)
 
 	// handle SIGINT (^C) in prompt mode
 	if p {
@@ -60,7 +60,7 @@ func main() {
 
 	// get search query
 	if p {
-		query = getQuery(reader)
+		query = getQuery(scanner)
 	} else {
 		query = strings.Join(flag.Args(), " ")
 	}
@@ -100,17 +100,16 @@ loop:
 
 endloop:
 	if p {
-		query = getQuery(reader)
+		query = getQuery(scanner)
 		goto loop
 	}
 }
 
-func getQuery(r *bufio.Reader) string {
+func getQuery(s *bufio.Scanner) string {
 	fmt.Printf("%sEnter search query:%s ", C_CYAN, C_RESET)
-	q, err := r.ReadString('\n')
-	if err != nil {
+	s.Scan()
+	if err := s.Err(); err != nil {
 		log.Fatalln(err)
 	}
-	q = strings.TrimSpace(q)
-	return q
+	return s.Text()
 }
