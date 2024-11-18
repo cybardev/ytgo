@@ -58,7 +58,7 @@ func main() {
 
 		query, err = rl.Readline()
 		if err != nil {
-			return // on EOF/SIGINT
+			return // exit on EOF/SIGINT
 		}
 	} else {
 		query = strings.Join(flag.Args(), " ")
@@ -101,7 +101,7 @@ endloop:
 	if p {
 		query, err = rl.Readline()
 		if err != nil {
-			return // on EOF/SIGINT
+			return // exit on EOF/SIGINT
 		}
 		goto loop
 	}
