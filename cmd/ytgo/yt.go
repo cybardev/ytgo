@@ -19,11 +19,15 @@ const (
 )
 
 func main() {
-	// specify available flags
 	var (
+		// command-line args
 		d, i, m, p, u, ver bool
 		n                  int
-		query              string
+		// declare vars
+		err   error
+		query string
+		v     *Video
+		rl    *readline.Instance
 	)
 
 	// parse CLI args
@@ -41,11 +45,6 @@ func main() {
 		fmt.Println(VERSION)
 		return
 	}
-
-	// declare necessary vars
-	var v *Video
-	var err error
-	var rl *readline.Instance
 
 	// get search query
 	if p {
