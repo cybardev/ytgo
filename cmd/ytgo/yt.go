@@ -56,10 +56,7 @@ func main() {
 		}
 		defer rl.Close()
 
-		query, err = rl.Readline()
-		if err != nil {
-			return // exit on EOF/SIGINT
-		}
+		goto endloop
 	} else {
 		query = strings.Join(flag.Args(), " ")
 	}
