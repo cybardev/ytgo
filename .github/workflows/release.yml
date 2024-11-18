@@ -20,18 +20,18 @@ jobs:
                       bin/
             - name: Create Release with pushed tag
               if: ${{ inputs.tagged }}
-              uses: "marvinpinto/action-automatic-releases@latest"
+              uses: softprops/action-gh-release@v2
               with:
-                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                  token: "${{ secrets.GITHUB_TOKEN }}"
                   prerelease: false
                   files: |
                       bin/ytgo-*/ytgo-*
             - name: Create Release with latest tag
               if: ${{ ! inputs.tagged }}
-              uses: "marvinpinto/action-automatic-releases@latest"
+              uses: softprops/action-gh-release@v2
               with:
-                  automatic_release_tag: latest
-                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                  tag_name: latest
+                  token: "${{ secrets.GITHUB_TOKEN }}"
                   prerelease: false
                   files: |
                       bin/ytgo-*/ytgo-*
