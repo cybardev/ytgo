@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/chzyer/readline"
@@ -55,48 +56,54 @@ func main() {
 		}
 		defer rl.Close()
 
-		goto prompt
+		query = getQuery(rl)
+	} else {
+		query = strings.Join(flag.Args(), " ")
 	}
-	query = strings.Join(flag.Args(), " ")
 
-entrypoint:
-	if query == "" {
-		if p {
+	for {
+		for query == "" {
+			if !p {
+				flag.Usage()
+				fmt.Println()
+				log.Fatalln("no query provided")
+			}
 			fmt.Println("No search query provided.")
-			goto prompt
+			query = getQuery(rl)
 		}
-		flag.Usage()
-		fmt.Println()
-		log.Fatalln("no query provided")
-	}
 
-	// play media from YT or display URL
-	if u {
-		v, err = GetVideoFromURL(query)
-	} else if i {
-		v, err = GetVideoFromMenu(query)
-	} else {
-		v, err = GetVideoFromSearch(query, n)
-	}
-	if err != nil {
-		log.Fatalln(err)
-	} else if v == nil {
-		return
-	} else if d {
-		fmt.Println(v.Id.URL())
-	} else {
-		err = v.Play(m)
-	}
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-prompt:
-	if p {
-		query, err = rl.Readline()
+		// play media from YT or display URL
+		if u {
+			v, err = GetVideoFromURL(query)
+		} else if i {
+			v, err = GetVideoFromMenu(query)
+		} else {
+			v, err = GetVideoFromSearch(query, n)
+		}
 		if err != nil {
-			return // exit on EOF/SIGINT
+			log.Fatalln(err)
+		} else if v == nil {
+			return
+		} else if d {
+			fmt.Println(v.Id.URL())
+		} else {
+			err = v.Play(m)
 		}
-		goto entrypoint
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		if !p {
+			break
+		}
+		query = getQuery(rl)
 	}
+}
+
+func getQuery(r *readline.Instance) string {
+	query, err := r.Readline()
+	if err != nil {
+		os.Exit(0) // exit on EOF/SIGINT
+	}
+	return query
 }
