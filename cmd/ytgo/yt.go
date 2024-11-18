@@ -9,7 +9,7 @@ import (
 	"github.com/chzyer/readline"
 )
 
-const VERSION string = "v3.1.2"
+const VERSION string = "v3.1.3"
 
 const (
 	C_RED   string = "\x1b[31m"
