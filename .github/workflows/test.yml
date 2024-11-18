@@ -20,7 +20,7 @@ jobs:
               run: go build -C cmd/ytgo -o "../../bin/ytgo"
 
             - name: Run tests
-              run: go test -v -coverprofile=coverage.out ./cmd/ytgo
+              run: go test -short -v -coverprofile=coverage.out ./cmd/ytgo
 
             - name: Report Coverage
               uses: shogo82148/actions-goveralls@v1

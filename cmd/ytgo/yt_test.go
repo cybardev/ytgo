@@ -71,6 +71,10 @@ func TestGetRequest(t *testing.T) {
 }
 
 func TestGetVideoFromURL(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
+
 	var wg sync.WaitGroup
 	wg.Add(len(vs))
 
@@ -109,6 +113,10 @@ func TestGetSearchResults(t *testing.T) {
 }
 
 func TestGetVideoFromSearch(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
+
 	var wg sync.WaitGroup
 	wg.Add(len(qs))
 
