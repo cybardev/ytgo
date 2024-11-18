@@ -14,41 +14,41 @@
 
 Click to navigate.
 
--   [Dependencies](#dependencies)
--   [Installation](#installation)
-    -   [Manual](#manual)
-    -   [With Go](#with-go)
--   [Usage](#usage)
-    -   [Examples](#examples)
--   [Credits](#credits)
+- [Dependencies](#dependencies)
+- [Installation](#installation)
+  - [Manual](#manual)
+  - [With Go](#with-go)
+- [Usage](#usage)
+  - [Examples](#examples)
+- [Credits](#credits)
 
 ### Dependencies
 
--   [mpv][mpv]
--   [yt-dlp][ytdl]
--   [ffmpeg][ffmpeg]
+- [mpv][mpv]
+- [yt-dlp][ytdl]
+- [ffmpeg][ffmpeg]
 
 ### Installation
 
 #### Manual
 
--   Download the file from the Releases page: [ytgo-{os}-{arch}][release]
+- Download the file from the Releases page: [ytgo-{os}-{arch}][release]
 
-    -   **PS**: Make sure to choose the right binary for your OS and architecture
+  - **PS**: Make sure to choose the right binary for your OS and architecture
 
--   Place it on your `$PATH` and make it executable.
+- Place it on your `$PATH` and make it executable.
 
 #### With Go
 
 > **Link to package**: [pkg.go.dev/github.com/cybardev/ytgo/v3][gopkg]
 
--   Run the following command:
+- Run the following command:
 
     ```sh
     go install github.com/cybardev/ytgo/v3/cmd/ytgo@latest
     ```
 
--   Ensure `$GOPATH/bin` is added to `$PATH`. An easy way is to add this line to `~/.profile`:
+- Ensure `$GOPATH/bin` is added to `$PATH`. An easy way is to add this line to `~/.profile`:
 
     ```sh
     export PATH="$(go env GOPATH)/bin:$PATH"
@@ -63,50 +63,51 @@ Output of `ytgo -h`:
 
 ```sh
 Usage of ytgo:
-  -d	Display URL only
-  -i	Interactive selection
-  -m	Play music only
+  -d    Display URL only
+  -i    Interactive selection
+  -m    Play music only
   -n int
-    	Play nth media (default 1)
-  -u	Play from URL
-  -v	Display version
+        Play nth media (default 1)
+  -p    Prompt mode
+  -u    Play from URL
+  -v    Display version
 ```
 
 **HINT**: [Here][mpv_hotkeys]'s a list of mpv keyboard shortcuts for your convenience.
 
 #### Examples
 
--   Play a video:
+- Play a video:
 
     `ytgo rickroll`
 
--   Play an audio:
+- Play an audio:
 
     `ytgo -m gurenge band cover`
 
--   Play the third search result:
+- Play the third search result:
 
     `ytgo -n 3 racing into the night`
 
--   Play an audio from URL:
+- Play an audio from URL:
 
     `ytgo -u -m "https://www.youtube.com/watch?v=y6120QOlsfU"`
 
-    -   **PS**: The URL must be quoted to avoid parsing by the shell
+  - **PS**: The URL must be quoted to avoid parsing by the shell
 
--   Find the URL of a video:
+- Find the URL of a video:
 
     `ytgo -d hotaru maiko fujita`
 
--   Interactive selection mode:
+- Interactive selection mode:
 
     `ytgo -i marmot scream meme`
 
 ### Credits
 
--   [pystardust][pystardust]'s [ytfzf][ytfzf]
--   [This article][article] I found during my quest to implement a simplified version of ytfzf in Python3
--   [StackOverflow answer][regex] used for the regex `var ytInitialData = ({.*?});`
+- [pystardust][pystardust]'s [ytfzf][ytfzf]
+- [This article][article] I found during my quest to implement a simplified version of ytfzf in Python3
+- [StackOverflow answer][regex] used for the regex `var ytInitialData = ({.*?});`
 
 <!-- Links -->
 

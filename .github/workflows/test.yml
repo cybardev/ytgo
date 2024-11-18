@@ -9,10 +9,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Set up Go
-              uses: actions/setup-go@v4
+              uses: actions/setup-go@v5
               with:
                   go-version: "1.22"
 
@@ -20,7 +20,7 @@ jobs:
               run: go build -C cmd/ytgo -o "../../bin/ytgo"
 
             - name: Run tests
-              run: go test -v -coverprofile=coverage.out ./cmd/ytgo
+              run: go test -short -v -coverprofile=coverage.out ./cmd/ytgo
 
             - name: Report Coverage
               uses: shogo82148/actions-goveralls@v1

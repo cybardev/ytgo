@@ -13,10 +13,10 @@ jobs:
                 arch: [amd64, arm64]
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Set up Go
-              uses: actions/setup-go@v4
+              uses: actions/setup-go@v5
               with:
                   go-version: "1.22"
 
@@ -29,7 +29,7 @@ jobs:
                   go build -C cmd/ytgo -o "../../bin/ytgo-${GOOS}-${GOARCH}${EXT}"
 
             - name: Upload ${{ matrix.os }}-${{ matrix.arch }} binary
-              uses: actions/upload-artifact@v2
+              uses: actions/upload-artifact@v4
               with:
                   name: ytgo-${{ matrix.os }}-${{ matrix.arch }}
                   path: |

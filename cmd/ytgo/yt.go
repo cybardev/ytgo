@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"log"
 	"strings"
+
+	"github.com/chzyer/readline"
 )
 
-const VERSION string = "v3.0.12"
+const VERSION string = "v3.1.3"
 
 const (
 	C_RED   string = "\x1b[31m"
@@ -17,11 +19,15 @@ const (
 )
 
 func main() {
-	// specify available flags
 	var (
-		d, i, m, u, ver bool
-		n               int
-		query           string
+		// command-line args
+		d, i, m, p, u, ver bool
+		n                  int
+		// declare vars
+		err   error
+		query string
+		v     *Video
+		rl    *readline.Instance
 	)
 
 	// parse CLI args
@@ -29,6 +35,7 @@ func main() {
 	flag.BoolVar(&d, "d", false, "Display URL only")
 	flag.BoolVar(&i, "i", false, "Interactive selection")
 	flag.BoolVar(&m, "m", false, "Play music only")
+	flag.BoolVar(&p, "p", false, "Prompt mode")
 	flag.BoolVar(&u, "u", false, "Play from URL")
 	flag.IntVar(&n, "n", 1, "Play nth media")
 	flag.Parse()
@@ -40,16 +47,32 @@ func main() {
 	}
 
 	// get search query
-	query = strings.Join(flag.Args(), " ")
+	if p {
+		// create line reader for search
+		rl, err = readline.New(fmt.Sprintf("%sSearch:%s ", C_CYAN, C_RESET))
+		if err != nil {
+			log.Fatalln(err)
+		}
+		defer rl.Close()
+
+		goto endloop
+	} else {
+		query = strings.Join(flag.Args(), " ")
+	}
+
+loop:
 	if query == "" {
-		flag.Usage()
-		fmt.Println()
-		log.Fatalln("no query provided")
+		if p {
+			fmt.Println("No search query provided.")
+			goto endloop
+		} else {
+			flag.Usage()
+			fmt.Println()
+			log.Fatalln("no query provided")
+		}
 	}
 
 	// play media from YT or display URL
-	var v *Video
-	var err error
 	if u {
 		v, err = GetVideoFromURL(query)
 	} else if i {
@@ -60,14 +83,22 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	} else if v == nil {
-	    return
-	}
-	if d {
-		fmt.Println(v.Id.URL())
 		return
+	} else if d {
+		fmt.Println(v.Id.URL())
+	} else {
+		err = v.Play(m)
 	}
-	err = v.Play(m)
 	if err != nil {
 		log.Fatalln(err)
+	}
+
+endloop:
+	if p {
+		query, err = rl.Readline()
+		if err != nil {
+			return // exit on EOF/SIGINT
+		}
+		goto loop
 	}
 }

@@ -43,6 +43,10 @@ func GetRequest(url string) (string, error) {
 	}
 	defer res.Body.Close()
 
+	if res.StatusCode != 200 {
+		return "", errors.New("HTTP response status not OK")
+	}
+
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err

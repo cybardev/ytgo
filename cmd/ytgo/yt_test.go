@@ -32,6 +32,24 @@ func TestVersion(t *testing.T) {
 	}
 }
 
+func TestGetShortcut(t *testing.T) {
+	var ctrlMap map[int]rune = map[int]rune{
+		0:  rune(48),
+		1:  rune(48 + 1),
+		9:  rune(48 + 9),
+		10: rune(87 + 10),
+		36: rune(87 + 36),
+		37: 0,
+		-1: 0,
+	}
+	for i, r := range ctrlMap {
+		symbol := getShortcut(i)
+		if symbol != r {
+			t.Errorf("Expected shortcut to be %d, got %d", r, symbol)
+		}
+	}
+}
+
 func TestGetRequest(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(len(vs))
@@ -53,6 +71,10 @@ func TestGetRequest(t *testing.T) {
 }
 
 func TestGetVideoFromURL(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
+
 	var wg sync.WaitGroup
 	wg.Add(len(vs))
 
@@ -91,6 +113,10 @@ func TestGetSearchResults(t *testing.T) {
 }
 
 func TestGetVideoFromSearch(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping test in short mode")
+	}
+
 	var wg sync.WaitGroup
 	wg.Add(len(qs))
 
@@ -132,23 +158,5 @@ func testGottenVideo(v *Video, t *testing.T) {
 	re = regexp.MustCompile(`^https://www\.youtube\.com/watch\?v=.{11}$`)
 	if re.MatchString(v.Id.URL()) == false {
 		t.Error("URL does not match pattern:", v.Id.URL())
-	}
-}
-
-func TestGetShortcut(t *testing.T) {
-	var ctrlMap map[int]rune = map[int]rune{
-		0:  rune(48),
-		1:  rune(48 + 1),
-		9:  rune(48 + 9),
-		10: rune(87 + 10),
-		36: rune(87 + 36),
-		37: 0,
-		-1: 0,
-	}
-	for i, r := range ctrlMap {
-		symbol := getShortcut(i)
-		if symbol != r {
-			t.Errorf("Expected shortcut to be %d, got %d", r, symbol)
-		}
 	}
 }

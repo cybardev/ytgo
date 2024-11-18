@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -17,8 +18,12 @@ func (r VideoRes) Parse() (*Video, error) {
 	if err != nil {
 		return nil, err
 	}
-	k := j.(map[string]interface{})["videoDetails"].(map[string]interface{})
-	return getVideoFromDetails(&k)
+	k, ok := j.(map[string]interface{})["videoDetails"].(map[string]interface{})
+	if ok {
+		return getVideoFromDetails(&k)
+	} else {
+		return &Video{}, errors.New("interface type mismatch")
+	}
 }
 
 func getVideoFromDetails(j *map[string]interface{}) (*Video, error) {
