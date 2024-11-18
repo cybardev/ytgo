@@ -1,13 +1,12 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
 	"log"
-	"os"
-	"os/signal"
 	"strings"
+
+	"github.com/chzyer/readline"
 )
 
 const VERSION string = "v3.1.0"
@@ -43,24 +42,24 @@ func main() {
 		return
 	}
 
+	// declare necessary vars
 	var v *Video
 	var err error
-	scanner := bufio.NewScanner(os.Stdin)
-
-	// handle SIGINT (^C) in prompt mode
-	if p {
-		go func() {
-			sigchan := make(chan os.Signal, 1)
-			signal.Notify(sigchan, os.Interrupt)
-			<-sigchan
-			fmt.Printf("\n%sExiting...%s\n", C_CYAN, C_RESET)
-			os.Exit(0)
-		}()
-	}
+	var rl *readline.Instance
 
 	// get search query
 	if p {
-		query = getQuery(scanner)
+		// create line reader for search
+		rl, err = readline.New(fmt.Sprintf("%sSearch:%s ", C_CYAN, C_RESET))
+		if err != nil {
+			log.Fatalln(err)
+		}
+		defer rl.Close()
+
+		query, err = rl.Readline()
+		if err != nil {
+			return // on EOF/SIGINT
+		}
 	} else {
 		query = strings.Join(flag.Args(), " ")
 	}
@@ -100,16 +99,10 @@ loop:
 
 endloop:
 	if p {
-		query = getQuery(scanner)
+		query, err = rl.Readline()
+		if err != nil {
+			return // on EOF/SIGINT
+		}
 		goto loop
 	}
-}
-
-func getQuery(s *bufio.Scanner) string {
-	fmt.Printf("%sEnter search query:%s ", C_CYAN, C_RESET)
-	s.Scan()
-	if err := s.Err(); err != nil {
-		log.Fatalln(err)
-	}
-	return s.Text()
 }
