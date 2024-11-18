@@ -55,21 +55,19 @@ func main() {
 		}
 		defer rl.Close()
 
-		goto endloop
-	} else {
-		query = strings.Join(flag.Args(), " ")
+		goto prompt
 	}
+	query = strings.Join(flag.Args(), " ")
 
-loop:
+entrypoint:
 	if query == "" {
 		if p {
 			fmt.Println("No search query provided.")
-			goto endloop
-		} else {
-			flag.Usage()
-			fmt.Println()
-			log.Fatalln("no query provided")
+			goto prompt
 		}
+		flag.Usage()
+		fmt.Println()
+		log.Fatalln("no query provided")
 	}
 
 	// play media from YT or display URL
@@ -93,12 +91,12 @@ loop:
 		log.Fatalln(err)
 	}
 
-endloop:
+prompt:
 	if p {
 		query, err = rl.Readline()
 		if err != nil {
 			return // exit on EOF/SIGINT
 		}
-		goto loop
+		goto entrypoint
 	}
 }
