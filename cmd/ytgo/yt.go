@@ -6,7 +6,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/chzyer/readline"
+	"github.com/ergochat/readline"
 )
 
 const VERSION string = "v3.1.3"
@@ -49,7 +49,14 @@ func main() {
 	// get search query
 	if p {
 		// create line reader for search
-		rl, err = readline.New(fmt.Sprintf("%sSearch:%s ", C_CYAN, C_RESET))
+		rl, err = readline.NewFromConfig(&readline.Config{
+			Prompt:            fmt.Sprintf("%sSearch:%s ", C_CYAN, C_RESET),
+			HistoryFile:       "/tmp/ytgo.hist.log",
+			HistoryLimit:      48,
+			HistorySearchFold: true,
+			VimMode:           true,
+		})
+		rl.SetVimMode(true)
 		if err != nil {
 			log.Fatalln(err)
 		}
@@ -93,7 +100,7 @@ entrypoint:
 
 prompt:
 	if p {
-		query, err = rl.Readline()
+		query, err = rl.ReadLine()
 		if err != nil {
 			return // exit on EOF/SIGINT
 		}
