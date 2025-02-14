@@ -4,12 +4,13 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/ergochat/readline"
 )
 
-const VERSION string = "v3.1.3"
+const VERSION string = "v3.1.4"
 
 const (
 	C_RED   string = "\x1b[31m"
@@ -48,10 +49,12 @@ func main() {
 
 	// get search query
 	if p {
+		home, _ := os.UserHomeDir()
+
 		// create line reader for search
 		rl, err = readline.NewFromConfig(&readline.Config{
 			Prompt:            fmt.Sprintf("%sSearch:%s ", C_CYAN, C_RESET),
-			HistoryFile:       "/tmp/ytgo.hist.log",
+			HistoryFile:       fmt.Sprintf("%s/%s", home, ".ytgo_history"),
 			HistoryLimit:      48,
 			HistorySearchFold: true,
 			VimMode:           true,
