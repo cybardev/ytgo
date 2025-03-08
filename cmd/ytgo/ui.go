@@ -19,6 +19,8 @@ func getVideoFromList(app *tview.Application, vs *[]Video) (*Video, error) {
 	var selected *Video
 
 	list := tview.NewList()
+	list.SetSelectedTextColor(tcell.ColorBlack)
+	list.SetSelectedBackgroundColor(tcell.ColorWhite)
 	list = list.
 		AddItem("Quit", "Press to exit", 'q', func() {
 			selected = nil
