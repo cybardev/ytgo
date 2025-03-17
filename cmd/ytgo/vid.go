@@ -35,7 +35,7 @@ func (v Video) Play(m bool) error {
 	if m {
 		bestaudio, novideo = "--ytdl-format=bestaudio", "--no-video"
 	}
-	cmd := exec.Command("mpv", bestaudio, novideo, v.Id.URL())
+	cmd := exec.Command("mpv", "--script-opts=visualizer-forcewindow=no", bestaudio, novideo, v.Id.URL())
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
