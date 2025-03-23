@@ -2,6 +2,8 @@
 
 ## A Go program to play media from YouTube without needing API keys
 
+<img height="128px" width="128px" src="./ytgo.png" alt="ytgo logo"><img height="128px" src="./ytgo-banner.png" alt="ytgo banner">
+
 > [!NOTE]
 > This is a `Python -> Go` translation of [cybardev/ytpy][ytpy] which itself was a `Shell -> Python` translation of [pystardust/ytfzf][ytfzf] _(before I rewrote it from scratch)_
 
