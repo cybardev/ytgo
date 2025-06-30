@@ -8,6 +8,9 @@ import (
 
 const YtURL = "https://www.youtube.com/"
 
+// supposed to be a const but can't be set as such
+var BACK_FLAG *Video = &Video{Id: "-1"}
+
 type VID string
 
 func (v VID) URL() string {

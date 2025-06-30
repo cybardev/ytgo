@@ -25,6 +25,10 @@ func getVideoFromList(app *tview.Application, vs *[]Video) (*Video, error) {
 		AddItem("Quit", "Press to exit", 'Q', func() {
 			selected = nil
 			app.Stop()
+		}).
+		AddItem("Back", "Press to go back", 'B', func() {
+			selected = BACK_FLAG
+			app.Stop()
 		})
 
 	for i, v := range *vs {

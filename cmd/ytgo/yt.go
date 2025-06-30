@@ -10,7 +10,7 @@ import (
 	"github.com/ergochat/readline"
 )
 
-const VERSION string = "v3.1.6"
+const VERSION string = "v3.2.0"
 
 const (
 	C_RED   string = "\x1b[31m"
@@ -85,6 +85,9 @@ entrypoint:
 		v, err = GetVideoFromURL(query)
 	} else if i {
 		v, err = GetVideoFromMenu(query)
+		if v == BACK_FLAG {
+			goto prompt
+		}
 	} else {
 		v, err = GetVideoFromSearch(query, n)
 	}
