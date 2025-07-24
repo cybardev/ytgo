@@ -107,6 +107,13 @@ Usage of ytgo:
 
     `ytgo -i marmot scream meme`
 
+- Playlist mode:
+
+    `ytgo -f playlist.txt`
+
+  - If file exists, items will be played; else file is created and user is prompted to add items.
+  - File is a plaintext list of valid Video IDs, one per line. Generate one and view it for an example.
+
 ### Credits
 
 - [pystardust][pystardust]'s [ytfzf][ytfzf]
