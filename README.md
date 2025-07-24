@@ -65,14 +65,16 @@ Output of `ytgo -h`:
 
 ```sh
 Usage of ytgo:
-  -d    Display URL only
-  -i    Interactive selection
-  -m    Play music only
+  -d	Display URL only
+  -f string
+    	Play from playlist file
+  -i	Interactive selection
+  -m	Play music only
   -n int
-        Play nth media (default 1)
-  -p    Prompt mode
-  -u    Play from URL
-  -v    Display version
+    	Play nth media (default 1)
+  -p	Prompt mode
+  -u	Play from URL
+  -v	Display version
 ```
 
 **HINT**: [Here][mpv_hotkeys]'s a list of mpv keyboard shortcuts for your convenience.
