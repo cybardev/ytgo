@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bufio"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -10,7 +12,7 @@ import (
 	"github.com/ergochat/readline"
 )
 
-const VERSION string = "v3.2.0"
+const VERSION string = "v3.3.0"
 
 const (
 	C_RED   string = "\x1b[31m"
@@ -24,6 +26,7 @@ func main() {
 		// command-line args
 		d, i, m, p, u, ver bool
 		n                  int
+		f                  string
 		// declare vars
 		err   error
 		query string
@@ -38,12 +41,84 @@ func main() {
 	flag.BoolVar(&m, "m", false, "Play music only")
 	flag.BoolVar(&p, "p", false, "Prompt mode")
 	flag.BoolVar(&u, "u", false, "Play from URL")
+	flag.StringVar(&f, "f", "", "Play from playlist file")
 	flag.IntVar(&n, "n", 1, "Play nth media")
 	flag.Parse()
 
 	// display version
 	if ver {
 		fmt.Println(VERSION)
+		return
+	}
+
+	// playlist functionality
+	if f != "" {
+		_, err := os.Stat(f)                // check if file exists
+		if errors.Is(err, os.ErrNotExist) { // create mode
+			playlist, err := os.Create(f)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			defer playlist.Close()
+			w := bufio.NewWriter(playlist)
+
+			// create line reader for search
+			rl, err = readline.NewFromConfig(&readline.Config{
+				Prompt:  fmt.Sprintf("%sSearch:%s ", C_CYAN, C_RESET),
+				VimMode: true,
+			})
+			if err != nil {
+				log.Fatalln(err)
+			}
+			defer rl.Close()
+
+			// keep adding until user quits
+			for {
+				query, err = rl.ReadLine()
+				if err != nil {
+					info, err := playlist.Stat()
+					if err != nil {
+						log.Fatalln(err)
+					}
+					if info.Size() == 0 {
+						os.Remove(f)
+					}
+					return // exit on EOF/SIGINT
+				}
+				if query == "" {
+					continue
+				}
+				v, err = GetVideoFromMenu(query)
+				if err != nil {
+					log.Fatalln(err)
+				}
+				_, err := fmt.Fprintln(w, v.Id)
+				if err != nil {
+					log.Fatalln(err)
+				}
+				w.Flush()
+			}
+		} else { // play mode
+			playlist, err := os.ReadFile(f)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			lines := strings.Split(string(playlist), "\n")
+			for i := 0; i < len(lines)-1; i++ {
+				id := lines[i]
+				if len(id) == 11 {
+					v := Video{Id: VID(id)}
+					v.Play(m)
+				} else {
+					log.Println("[WARN] Skipped invalid Video ID:", id)
+				}
+				playlist, err := os.ReadFile(f)
+				if err != nil {
+					log.Fatalln(err)
+				}
+				lines = strings.Split(string(playlist), "\n")
+			}
+		}
 		return
 	}
 
