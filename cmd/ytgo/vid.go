@@ -33,7 +33,6 @@ func (v Video) Desc() string {
 }
 
 func (v Video) Play(m bool) error {
-	fmt.Println("Playing:", v)
 	bestaudio, novideo := "", ""
 	if m {
 		bestaudio, novideo = "--ytdl-format=bestaudio", "--no-video"

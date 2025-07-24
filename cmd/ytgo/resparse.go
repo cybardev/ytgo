@@ -13,12 +13,12 @@ type VideoRes string // Video Response
 func (r VideoRes) Parse() (*Video, error) {
 	re := regexp.MustCompile(`var ytInitialPlayerResponse = ({.*?});`)
 	s := re.FindStringSubmatch(string(r))[1]
-	var j interface{}
+	var j any
 	err := json.Unmarshal([]byte(s), &j)
 	if err != nil {
 		return nil, err
 	}
-	k, ok := j.(map[string]interface{})["videoDetails"].(map[string]interface{})
+	k, ok := j.(map[string]any)["videoDetails"].(map[string]any)
 	if ok {
 		return getVideoFromDetails(&k)
 	} else {
@@ -26,7 +26,7 @@ func (r VideoRes) Parse() (*Video, error) {
 	}
 }
 
-func getVideoFromDetails(j *map[string]interface{}) (*Video, error) {
+func getVideoFromDetails(j *map[string]any) (*Video, error) {
 	t, err := strconv.Atoi((*j)["lengthSeconds"].(string))
 	if err != nil {
 		t = 0
@@ -51,16 +51,16 @@ type SearchRes string // Search Response
 func (r SearchRes) Parse() (*[]Video, error) {
 	re := regexp.MustCompile(`var ytInitialData = ({.*?});`)
 	s := re.FindStringSubmatch(string(r))[1]
-	var j interface{}
+	var j any
 	err := json.Unmarshal([]byte(s), &j)
 	if err != nil {
 		return nil, err
 	}
-	res := j.(map[string]interface{})["contents"].(map[string]interface{})["twoColumnSearchResultsRenderer"].(map[string]interface{})["primaryContents"].(map[string]interface{})["sectionListRenderer"].(map[string]interface{})["contents"].([]interface{})[0].(map[string]interface{})["itemSectionRenderer"].(map[string]interface{})["contents"].([]interface{})
+	res := j.(map[string]any)["contents"].(map[string]any)["twoColumnSearchResultsRenderer"].(map[string]any)["primaryContents"].(map[string]any)["sectionListRenderer"].(map[string]any)["contents"].([]any)[0].(map[string]any)["itemSectionRenderer"].(map[string]any)["contents"].([]any)
 	return getVideoList(&res), nil
 }
 
-func getVideoList(j *[]interface{}) *[]Video {
+func getVideoList(j *[]any) *[]Video {
 	var vs []Video
 	for _, i := range *j {
 		v, isVideo := getVideoFromEntry(&i)
@@ -71,16 +71,16 @@ func getVideoList(j *[]interface{}) *[]Video {
 	return &vs
 }
 
-func getVideoFromEntry(j *interface{}) (*Video, bool) {
-	k := (*j).(map[string]interface{})["videoRenderer"]
+func getVideoFromEntry(j *any) (*Video, bool) {
+	k := (*j).(map[string]any)["videoRenderer"]
 	if k == nil {
 		return nil, false // when radioRenderer, shelfRenderer, reelShelfRenderer, etc.
 	}
-	l := k.(map[string]interface{})
+	l := k.(map[string]any)
 	return &Video{
 		Id:       VID(l["videoId"].(string)),
-		Title:    l["title"].(map[string]interface{})["runs"].([]interface{})[0].(map[string]interface{})["text"].(string),
-		Channel:  l["ownerText"].(map[string]interface{})["runs"].([]interface{})[0].(map[string]interface{})["text"].(string),
-		Duration: l["lengthText"].(map[string]interface{})["simpleText"].(string),
+		Title:    l["title"].(map[string]any)["runs"].([]any)[0].(map[string]any)["text"].(string),
+		Channel:  l["ownerText"].(map[string]any)["runs"].([]any)[0].(map[string]any)["text"].(string),
+		Duration: l["lengthText"].(map[string]any)["simpleText"].(string),
 	}, true
 }

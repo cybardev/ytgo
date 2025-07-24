@@ -98,6 +98,7 @@ entrypoint:
 	} else if d {
 		fmt.Println(v.Id.URL())
 	} else {
+		fmt.Println("Playing:", v)
 		err = v.Play(m)
 	}
 	if err != nil {
