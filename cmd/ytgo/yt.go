@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"errors"
 	"flag"
 	"fmt"
@@ -12,13 +11,14 @@ import (
 	"github.com/ergochat/readline"
 )
 
-const VERSION string = "v3.3.0"
+const VERSION string = "v3.3.1"
 
 const (
-	C_RED   string = "\x1b[31m"
-	C_GREEN string = "\x1b[32m"
-	C_CYAN  string = "\x1b[36m"
-	C_RESET string = "\x1b[00m"
+	C_RED    string = "\x1b[31m"
+	C_GREEN  string = "\x1b[32m"
+	C_YELLOW string = "\x1b[33m"
+	C_CYAN   string = "\x1b[36m"
+	C_RESET  string = "\x1b[00m"
 )
 
 func main() {
@@ -51,75 +51,19 @@ func main() {
 		return
 	}
 
-	// playlist functionality
+	// playlist mode
 	if f != "" {
-		_, err := os.Stat(f)                // check if file exists
-		if errors.Is(err, os.ErrNotExist) { // create mode
-			playlist, err := os.Create(f)
-			if err != nil {
-				log.Fatalln(err)
-			}
-			defer playlist.Close()
-			w := bufio.NewWriter(playlist)
-
-			// create line reader for search
-			rl, err = readline.NewFromConfig(&readline.Config{
-				Prompt:  fmt.Sprintf("%sSearch:%s ", C_CYAN, C_RESET),
-				VimMode: true,
-			})
-			if err != nil {
-				log.Fatalln(err)
-			}
-			defer rl.Close()
-
-			// keep adding until user quits
-			for {
-				query, err = rl.ReadLine()
-				if err != nil {
-					info, err := playlist.Stat()
-					if err != nil {
-						log.Fatalln(err)
-					}
-					if info.Size() == 0 {
-						os.Remove(f)
-					}
-					return // exit on EOF/SIGINT
-				}
-				if query == "" {
-					continue
-				}
-				v, err = GetVideoFromMenu(query)
-				if err != nil {
-					log.Fatalln(err)
-				}
-				_, err := fmt.Fprintln(w, v.Id)
-				if err != nil {
-					log.Fatalln(err)
-				}
-				w.Flush()
-			}
-		} else { // play mode
-			playlist, err := os.ReadFile(f)
-			if err != nil {
-				log.Fatalln(err)
-			}
-			lines := strings.Split(string(playlist), "\n")
-			for i := 0; i < len(lines)-1; i++ {
-				id := lines[i]
-				if len(id) == 11 {
-					v := Video{Id: VID(id)}
-					v.Play(m)
-				} else {
-					log.Println("[WARN] Skipped invalid Video ID:", id)
-				}
-				playlist, err := os.ReadFile(f)
-				if err != nil {
-					log.Fatalln(err)
-				}
-				lines = strings.Split(string(playlist), "\n")
-			}
+		_, err := os.Stat(f) // check if file exists
+		p := Playlist(f)
+		if errors.Is(err, os.ErrNotExist) {
+			err = p.Create()
+		} else {
+			err = p.Play(m)
 		}
-		return
+		if err != nil {
+			log.Fatalln(err)
+		}
+		return // exit program once playlist is handled
 	}
 
 	// get search query
