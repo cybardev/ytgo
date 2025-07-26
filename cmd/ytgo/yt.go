@@ -11,7 +11,7 @@ import (
 	"github.com/ergochat/readline"
 )
 
-const VERSION string = "v3.4.1"
+const VERSION string = "v3.4.3"
 
 const (
 	C_RED    string = "\x1b[31m"
