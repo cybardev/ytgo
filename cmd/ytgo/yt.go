@@ -11,7 +11,7 @@ import (
 	"github.com/ergochat/readline"
 )
 
-const VERSION string = "v3.4.0"
+const VERSION string = "v3.4.1"
 
 const (
 	C_RED    string = "\x1b[31m"
@@ -69,9 +69,9 @@ func main() {
 	// get search query
 	if p {
 		rl = GetReadline()
-	} else {
-		query = strings.Join(flag.Args(), " ")
+		defer rl.Close()
 	}
+	query = strings.Join(flag.Args(), " ")
 
 	for {
 		if p {
@@ -136,6 +136,5 @@ func GetReadline() *readline.Instance {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer rl.Close()
 	return rl
 }

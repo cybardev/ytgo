@@ -20,6 +20,7 @@ func (p Playlist) Create() error {
 	w := bufio.NewWriter(playlist)
 
 	rl := GetReadline()
+	defer rl.Close()
 
 	// keep adding until user quits
 	for {
