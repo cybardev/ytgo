@@ -5,11 +5,7 @@ import (
 	"github.com/rivo/tview"
 )
 
-func GetVideoFromMenu(query string) (*Video, error) {
-	vs, err := GetSearchResults(query)
-	if err != nil {
-		return nil, err
-	}
+func GetVideoFromMenu(vs *[]Video) (*Video, error) {
 	tview.Styles.PrimitiveBackgroundColor = tcell.ColorDefault
 	app := tview.NewApplication()
 	return getVideoFromList(app, vs)

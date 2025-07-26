@@ -68,22 +68,7 @@ func main() {
 
 	// get search query
 	if p {
-		home, _ := os.UserHomeDir()
-
-		// create line reader for search
-		rl, err = readline.NewFromConfig(&readline.Config{
-			Prompt:            fmt.Sprintf("%sSearch:%s ", C_CYAN, C_RESET),
-			HistoryFile:       fmt.Sprintf("%s/%s", home, ".ytgo_history"),
-			HistoryLimit:      48,
-			HistorySearchFold: true,
-			VimMode:           true,
-		})
-		rl.SetVimMode(true)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		defer rl.Close()
-
+		rl = GetReadline()
 		goto prompt
 	}
 	query = strings.Join(flag.Args(), " ")
@@ -103,9 +88,12 @@ entrypoint:
 	if u {
 		v, err = GetVideoFromURL(query)
 	} else if i {
-		v, err = GetVideoFromMenu(query)
-		if v == BACK_FLAG {
-			goto prompt
+		vs, err := GetSearchResults(query)
+		if err == nil {
+			v, err = GetVideoFromMenu(vs)
+			if v == BACK_FLAG {
+				goto prompt
+			}
 		}
 	} else {
 		v, err = GetVideoFromSearch(query, n)
@@ -132,4 +120,20 @@ prompt:
 		}
 		goto entrypoint
 	}
+}
+
+func GetReadline() *readline.Instance {
+	home, _ := os.UserHomeDir()
+	rl, err := readline.NewFromConfig(&readline.Config{
+		Prompt:            fmt.Sprintf("%sSearch:%s ", C_CYAN, C_RESET),
+		HistoryFile:       fmt.Sprintf("%s/%s", home, ".ytgo_history"),
+		HistoryLimit:      48,
+		HistorySearchFold: true,
+		VimMode:           true,
+	})
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer rl.Close()
+	return rl
 }
