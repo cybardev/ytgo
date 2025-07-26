@@ -36,6 +36,7 @@ func (p Playlist) Create() error {
 			return nil // exit on EOF/SIGINT
 		}
 		if query == "" {
+			fmt.Println("No search query provided.")
 			continue
 		}
 		vs, err := GetSearchResults(query)
