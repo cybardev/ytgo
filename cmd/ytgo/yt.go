@@ -11,7 +11,7 @@ import (
 	"github.com/ergochat/readline"
 )
 
-const VERSION string = "v3.3.1"
+const VERSION string = "v3.4.0"
 
 const (
 	C_RED    string = "\x1b[31m"
@@ -69,56 +69,58 @@ func main() {
 	// get search query
 	if p {
 		rl = GetReadline()
-		goto prompt
+	} else {
+		query = strings.Join(flag.Args(), " ")
 	}
-	query = strings.Join(flag.Args(), " ")
 
-entrypoint:
-	if query == "" {
+	for {
 		if p {
-			fmt.Println("No search query provided.")
-			goto prompt
-		}
-		flag.Usage()
-		fmt.Println()
-		log.Fatalln("no query provided")
-	}
-
-	// play media from YT or display URL
-	if u {
-		v, err = GetVideoFromURL(query)
-	} else if i {
-		vs, err := GetSearchResults(query)
-		if err == nil {
-			v, err = GetVideoFromMenu(vs)
-			if v == BACK_FLAG {
-				goto prompt
+			query, err = rl.ReadLine()
+			if err != nil {
+				return // exit on EOF/SIGINT
 			}
 		}
-	} else {
-		v, err = GetVideoFromSearch(query, n)
-	}
-	if err != nil {
-		log.Fatalln(err)
-	} else if v == nil {
-		return
-	} else if d {
-		fmt.Println(v.Id.URL())
-	} else {
-		fmt.Println("Playing:", v)
-		err = v.Play(m)
-	}
-	if err != nil {
-		log.Fatalln(err)
-	}
 
-prompt:
-	if p {
-		query, err = rl.ReadLine()
-		if err != nil {
-			return // exit on EOF/SIGINT
+		if query == "" {
+			if p {
+				fmt.Println("No search query provided.")
+				continue
+			}
+			flag.Usage()
+			fmt.Println()
+			log.Fatalln("no query provided")
 		}
-		goto entrypoint
+
+		// play media from YT or display URL
+		if u {
+			v, err = GetVideoFromURL(query)
+		} else if i {
+			vs, err := GetSearchResults(query)
+			if err == nil {
+				v, err = GetVideoFromMenu(vs)
+				if v == BACK_FLAG {
+					continue
+				}
+			}
+		} else {
+			v, err = GetVideoFromSearch(query, n)
+		}
+		if err != nil {
+			log.Fatalln(err)
+		} else if v == nil {
+			return
+		} else if d {
+			fmt.Println(v.Id.URL())
+		} else {
+			fmt.Println("Playing:", v)
+			err = v.Play(m)
+		}
+		if err != nil {
+			log.Fatalln(err)
+		}
+		if !p {
+			break
+		}
 	}
 }
 
