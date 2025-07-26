@@ -20,13 +20,13 @@ func GetVideoFromSearch(query string, n int) (*Video, error) {
 	if err != nil {
 		return nil, err
 	}
-	if n <= 0 || n > len(*vs) {
+	if n <= 0 || n > len(vs) {
 		return nil, errors.New("no video found")
 	}
-	return &(*vs)[n-1], nil
+	return &(vs)[n-1], nil
 }
 
-func GetSearchResults(query string) (*[]Video, error) {
+func GetSearchResults(query string) ([]Video, error) {
 	params := url.Values{"search_query": []string{query}}.Encode()
 	res, err := GetRequest(YtURL + "results?" + params)
 	if err != nil {

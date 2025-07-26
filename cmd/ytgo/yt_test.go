@@ -103,7 +103,7 @@ func TestGetSearchResults(t *testing.T) {
 			if err != nil {
 				t.Error(err)
 			}
-			for _, v := range *v {
+			for _, v := range v {
 				testGottenVideo(&v, t)
 			}
 		}(q, t, &wg)

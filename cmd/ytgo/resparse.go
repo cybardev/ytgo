@@ -48,7 +48,7 @@ func getVideoFromDetails(j *map[string]any) (*Video, error) {
 
 type SearchRes string // Search Response
 
-func (r SearchRes) Parse() (*[]Video, error) {
+func (r SearchRes) Parse() ([]Video, error) {
 	re := regexp.MustCompile(`var ytInitialData = ({.*?});`)
 	s := re.FindStringSubmatch(string(r))[1]
 	var j any
@@ -60,7 +60,7 @@ func (r SearchRes) Parse() (*[]Video, error) {
 	return getVideoList(&res), nil
 }
 
-func getVideoList(j *[]any) *[]Video {
+func getVideoList(j *[]any) []Video {
 	var vs []Video
 	for _, i := range *j {
 		v, isVideo := getVideoFromEntry(&i)
@@ -68,7 +68,7 @@ func getVideoList(j *[]any) *[]Video {
 			vs = append(vs, *v)
 		}
 	}
-	return &vs
+	return vs
 }
 
 func getVideoFromEntry(j *any) (*Video, bool) {

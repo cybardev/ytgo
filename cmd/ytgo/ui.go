@@ -5,13 +5,13 @@ import (
 	"github.com/rivo/tview"
 )
 
-func GetVideoFromMenu(vs *[]Video) (*Video, error) {
+func GetVideoFromMenu(vs []Video) (*Video, error) {
 	tview.Styles.PrimitiveBackgroundColor = tcell.ColorDefault
 	app := tview.NewApplication()
 	return getVideoFromList(app, vs)
 }
 
-func getVideoFromList(app *tview.Application, vs *[]Video) (*Video, error) {
+func getVideoFromList(app *tview.Application, vs []Video) (*Video, error) {
 	var selected *Video
 
 	list := tview.NewList()
@@ -27,7 +27,7 @@ func getVideoFromList(app *tview.Application, vs *[]Video) (*Video, error) {
 			app.Stop()
 		})
 
-	for i, v := range *vs {
+	for i, v := range vs {
 		list.AddItem(v.Title, v.Desc(), getShortcut(i), func() {
 			selected = &v
 			app.Stop()
